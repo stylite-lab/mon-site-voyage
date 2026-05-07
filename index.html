@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wanderlust — Guide Backpacker Mondial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--terra:#D4654A;--ocean:#3B7A9E;--night:#1A1A2E;--warm:#FAF6EF;--sand:#F5EDD8;--muted:rgba(26,26,46,0.5);--border:rgba(26,26,46,0.1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--warm);color:var(--night);min-height:100vh;overflow-x:hidden}
+.hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;position:relative;background:var(--night);overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1800&q=80');background-size:cover;background-position:center;opacity:0.28}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:680px}
+.eyebrow{font-size:0.68rem;letter-spacing:0.35em;text-transform:uppercase;color:#D4654A;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:center;gap:10px}
+.eyebrow::before,.eyebrow::after{content:'';width:28px;height:1px;background:#D4654A}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,7vw,4.8rem);color:#fff;line-height:1.1;margin-bottom:1.1rem;font-weight:400}
+.hero h1 em{font-style:italic;color:#F5EDD8}
+.hero-sub{font-size:0.92rem;color:rgba(255,255,255,0.58);line-height:1.8;margin-bottom:2rem;font-weight:300;max-width:500px;margin-left:auto;margin-right:auto}
+.hero-flags{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:2rem;opacity:0.8}
+.hero-flags span{font-size:1.45rem}
+.btn-start{display:inline-flex;align-items:center;gap:10px;padding:1rem 2.2rem;background:#D4654A;color:#fff;border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:500;cursor:pointer;transition:all 0.3s}
+.btn-start:hover{background:#bf5538;transform:translateY(-2px)}
+.quiz-section{min-height:100vh;padding:4rem 1.5rem;background:#FAF6EF;display:none}
+.quiz-section.active{display:block}
+.quiz-container{max-width:820px;margin:0 auto}
+.quiz-header{text-align:center;margin-bottom:2.5rem}
+.quiz-header h2{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:400;margin-bottom:0.4rem}
+.quiz-header p{color:rgba(26,26,46,0.5);font-size:0.88rem;font-weight:300}
+.progress-bar{width:100%;height:3px;background:rgba(26,26,46,0.1);border-radius:10px;margin-bottom:2.5rem;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#D4654A,#3B7A9E);border-radius:10px;transition:width 0.5s ease}
+.step{display:none;animation:fadeUp 0.4s ease}
+.step.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.step-q{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:400;margin-bottom:0.4rem;line-height:1.3}
+.step-hint{color:rgba(26,26,46,0.5);font-size:0.82rem;margin-bottom:1.6rem}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.8rem;margin-bottom:2rem}
+.opt{border:2px solid rgba(26,26,46,0.1);border-radius:14px;padding:1.1rem;cursor:pointer;transition:all 0.22s;background:#fff}
+.opt:hover{border-color:#D4654A;transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.07)}
+.opt.on{border-color:#D4654A;background:#D4654A;color:#fff;transform:translateY(-3px)}
+.opt-emoji{font-size:1.65rem;display:block;margin-bottom:0.45rem}
+.opt-label{font-size:0.84rem;font-weight:500;line-height:1.3}
+.opt-sub{font-size:0.71rem;color:rgba(26,26,46,0.5);margin-top:2px}
+.opt.on .opt-sub,.opt.on .opt-label{color:#fff}
+.slider-wrap{margin-bottom:2rem}
+.slider-labels{display:flex;justify-content:space-between;font-size:0.78rem;color:rgba(26,26,46,0.5);margin-bottom:0.3rem}
+input[type=range]{width:100%;-webkit-appearance:none;height:4px;border-radius:10px;background:rgba(26,26,46,0.1);outline:none;cursor:pointer;margin:0.9rem 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#D4654A;box-shadow:0 2px 10px rgba(212,101,74,0.4)}
+.slider-val{text-align:center;font-family:'Playfair Display',serif;font-size:1.45rem;color:#D4654A;margin-top:0.3rem}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:0.8rem}
+.btn-back,.btn-next{display:inline-flex;align-items:center;gap:7px;padding:0.75rem 1.7rem;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.86rem;font-weight:500;cursor:pointer;transition:all 0.22s;border:none}
+.btn-back{background:transparent;border:1.5px solid rgba(26,26,46,0.1);color:rgba(26,26,46,0.5)}
+.btn-back:hover{border-color:#1A1A2E;color:#1A1A2E}
+.btn-next{background:#1A1A2E;color:#fff;margin-left:auto}
+.btn-next:hover{background:#D4654A;transform:translateY(-2px)}
+.btn-next:disabled{opacity:0.32;cursor:not-allowed;transform:none}
+.btn-gen{background:linear-gradient(135deg,#D4654A,#C44A80);color:#fff;padding:1rem 2.4rem;border-radius:50px;border:none;font-size:0.98rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:9px;transition:all 0.3s;margin:0 auto}
+.btn-gen:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(212,101,74,0.38)}
+.load-sec{min-height:100vh;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.8rem;background:#1A1A2E;padding:2rem}
+.load-sec.active{display:flex}
+.spin{width:68px;height:68px;border:3px solid rgba(255,255,255,0.07);border-top-color:#D4654A;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-msg{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff;font-style:italic;text-align:center}
+.dots{display:flex;gap:5px}
+.dots span{width:6px;height:6px;background:#D4654A;border-radius:50%;animation:dot 1.4s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+.res-sec{display:none;min-height:100vh;background:#FAF6EF}
+.res-sec.active{display:block}
+.res-hero{position:relative;height:58vh;overflow:hidden}
+.res-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.res-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.04) 0%,rgba(0,0,0,0.74) 100%);display:flex;align-items:flex-end;padding:2.5rem}
+.res-hero-txt{color:#fff}
+.res-tag{display:inline-block;padding:3px 13px;background:#D4654A;border-radius:20px;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.7rem}
+.res-hero-txt h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.1;margin-bottom:0.35rem}
+.res-sub-txt{font-size:0.88rem;opacity:0.72;font-weight:300}
+.res-body{max-width:880px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.match-wrap{background:#fff;border-radius:16px;padding:1.3rem 1.7rem;margin-bottom:1.4rem;display:flex;align-items:center;gap:1.6rem;box-shadow:0 2px 16px rgba(0,0,0,0.04);flex-wrap:wrap}
+.match-num{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:#D4654A;line-height:1;min-width:85px}
+.match-num span{font-size:1rem;font-weight:400;opacity:0.5}
+.match-info{flex:1}
+.match-info h3{font-size:0.92rem;font-weight:500;margin-bottom:2px}
+.match-info p{font-size:0.8rem;color:rgba(26,26,46,0.5);font-weight:300}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:0.8rem;margin-bottom:1.4rem}
+.ipill{background:#fff;border-radius:12px;padding:0.95rem;box-shadow:0 2px 12px rgba(0,0,0,0.04)}
+.ipill-icon{font-size:1.25rem;margin-bottom:4px}
+.ipill-label{font-size:0.63rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(26,26,46,0.5);margin-bottom:2px}
+.ipill-val{font-size:0.86rem;font-weight:500}
+.cb{background:#fff;border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;box-shadow:0 2px 16px rgba(0,0,0,0.04)}
+.cb h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;margin-bottom:0.8rem;display:flex;align-items:center;gap:7px}
+.cb h4{font-size:0.88rem;font-weight:600;margin:1rem 0 0.3rem}
+.cb p{font-size:0.87rem;line-height:1.82;color:rgba(26,26,46,0.72)}
+.divider{height:1px;background:rgba(26,26,46,0.1);margin:1rem 0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.7rem}
+.tag{padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:500}
+.tg{background:#EAF4EB;color:#3A7A42}
+.to{background:#FDEEE9;color:#D4654A}
+.tb{background:#E8F3FA;color:#3B7A9E}
+.act-list{display:flex;flex-direction:column;gap:0.85rem;margin-top:0.5rem}
+.act-item{border:1px solid rgba(26,26,46,0.1);border-radius:12px;padding:1rem 1.1rem;background:#FAF6EF}
+.act-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.act-emoji{font-size:1.2rem}
+.act-name{font-size:0.9rem;font-weight:600}
+.act-price{font-size:0.78rem;font-weight:600;color:#D4654A;margin-left:auto}
+.act-desc{font-size:0.8rem;color:rgba(26,26,46,0.6);line-height:1.55}
+.act-tip{font-size:0.74rem;background:#EAF4EB;color:#3A7A42;padding:3px 8px;border-radius:8px;display:inline-block;margin-top:5px}
+.tr-item{display:flex;gap:0.9rem;padding:0.85rem 0;border-bottom:1px solid rgba(26,26,46,0.1);align-items:flex-start}
+.tr-item:last-child{border-bottom:none;padding-bottom:0}
+.tr-icon{font-size:1.3rem;min-width:34px;margin-top:1px}
+.tr-content h4{font-size:0.86rem;font-weight:600;margin-bottom:1px}
+.tr-content p{font-size:0.78rem;color:rgba(26,26,46,0.55);line-height:1.5}
+.platform{font-size:0.7rem;background:#1A1A2E;color:#fff;padding:2px 8px;border-radius:8px;display:inline-block;margin-top:4px}
+.money-row{display:flex;justify-content:space-between;align-items:flex-start;padding:0.7rem 0;border-bottom:1px solid rgba(26,26,46,0.1);gap:1rem}
+.money-row:last-child{border-bottom:none}
+.money-label{font-size:0.84rem;flex:1}
+.money-label small{display:block;font-size:0.73rem;color:rgba(26,26,46,0.5);margin-top:1px}
+.money-val{font-size:0.8rem;font-weight:600;color:#D4654A;text-align:right;min-width:75px}
+.ev-item{display:flex;gap:0.9rem;padding:0.85rem 0;border-bottom:1px solid rgba(26,26,46,0.1);align-items:flex-start}
+.ev-item:last-child{border-bottom:none;padding-bottom:0}
+.ev-date{background:linear-gradient(135deg,#D4654A,#3B7A9E);color:#fff;border-radius:10px;padding:5px 9px;font-size:0.66rem;font-weight:600;text-align:center;min-width:54px;line-height:1.3}
+.ev-content h4{font-size:0.86rem;font-weight:600;margin-bottom:1px}
+.ev-content p{font-size:0.78rem;color:rgba(26,26,46,0.55);line-height:1.5}
+.bud-row{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid rgba(26,26,46,0.1);font-size:0.84rem}
+.bud-row:last-child{border-bottom:none}
+.bud-amt{font-weight:600;color:#D4654A}
+.phrase-item{display:flex;gap:0.9rem;align-items:center;padding:0.5rem 0;border-bottom:1px solid rgba(26,26,46,0.1);font-size:0.84rem}
+.phrase-item:last-child{border-bottom:none}
+.phrase-local{font-weight:600;min-width:120px;color:#D4654A}
+.phrase-fr{color:rgba(26,26,46,0.55)}
+.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.55rem;margin-top:0.7rem}
+.app-pill{background:#FAF6EF;border:1px solid rgba(26,26,46,0.1);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.76rem;display:flex;align-items:center;gap:6px}
+.warn{background:#FDEEE9;border:1px solid rgba(212,101,74,0.22);border-radius:12px;padding:0.95rem 1.1rem;font-size:0.82rem;line-height:1.72;color:rgba(26,26,46,0.72)}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-top:1.8rem}
+.cta-btn{padding:0.9rem 1.4rem;border-radius:12px;border:none;font-family:'DM Sans',sans-serif;font-size:0.86rem;font-weight:500;cursor:pointer;transition:all 0.22s;text-align:center}
+.cta-p{background:#1A1A2E;color:#fff}
+.cta-p:hover{background:#D4654A;transform:translateY(-2px)}
+.cta-s{background:transparent;border:1.5px solid rgba(26,26,46,0.1);color:#1A1A2E}
+.cta-s:hover{border-color:#1A1A2E;transform:translateY(-2px)}
+@media(max-width:560px){.opts{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr 1fr}.cta-grid{grid-template-columns:1fr}.res-overlay{padding:1.4rem}.match-wrap{flex-direction:column;align-items:flex-start;gap:0.9rem}}
+</style>
+</head>
+<body>
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="eyebrow">Backpacker World Guide</div>
+    <h1>Le monde est<br><em>ton terrain de jeu</em></h1>
+    <p class="hero-sub">Pas le temps de tout planifier ? Réponds à 7 questions et on te trouve la destination parfaite — activités, budget, transports, culture. Tout y est.</p>
+    <div class="hero-flags"><span>🇹🇭</span><span>🇵🇹</span><span>🇲🇦</span><span>🇻🇳</span><span>🇵🇪</span><span>🇬🇪</span><span>🇮🇩</span><span>🇲🇽</span><span>🇮🇳</span><span>🇹🇿</span><span>🇳🇵</span><span>🇷🇸</span><span>🇧🇴</span><span>🇪🇹</span><span>🇨🇴</span><span>🇯🇴</span></div>
+    <button class="btn-start" onclick="startQuiz()">Trouver ma destination →</button>
+  </div>
+</section>
+<section class="quiz-section" id="quizSection">
+  <div class="quiz-container">
+    <div class="quiz-header"><h2>Ton profil backpacker</h2><p>7 questions · 2 minutes · résultat sur-mesure ✨</p></div>
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:14%"></div></div>
+    <div class="step active" data-step="1">
+      <p class="step-q">C'est quoi ta vibe de voyage ?</p><p class="step-hint">Ce qui te fait vraiment vibrer</p>
+      <div class="opts">
+        <div class="opt" onclick="sel(this,'vibe','plage')"><span class="opt-emoji">🏖️</span><div class="opt-label">Plage & mer</div><div class="opt-sub">Snorkeling, soleil, sable</div></div>
+        <div class="opt" onclick="sel(this,'vibe','montagne')"><span class="opt-emoji">⛰️</span><div class="opt-label">Montagne & trek</div><div class="opt-sub">Altitude, panoramas, rando</div></div>
+        <div class="opt" onclick="sel(this,'vibe','culture')"><span class="opt-emoji">🏛️</span><div class="opt-label">Culture & histoire</div><div class="opt-sub">Temples, ruines, traditions</div></div>
+        <div class="opt" onclick="sel(this,'vibe','city')"><span class="opt-emoji">🌆</span><div class="opt-label">City vibes</div><div class="opt-sub">Food, nightlife, urbanisme</div></div>
+        <div class="opt" onclick="sel(this,'vibe','aventure')"><span class="opt-emoji">🧗</span><div class="opt-label">Aventure & sport</div><div class="opt-sub">Surf, kayak, escalade</div></div>
+        <div class="opt" onclick="sel(this,'vibe','nature')"><span class="opt-emoji">🌿</span><div class="opt-label">Nature sauvage</div><div class="opt-sub">Jungle, savane, désert</div></div>
+      </div>
+      <div class="nav"><div></div><button class="btn-next" id="bn1" disabled onclick="nxt(2)">Suivant →</button></div>
+    </div>
+    <div class="step" data-step="2">
+      <p class="step-q">Ton budget journalier ?</p><p class="step-hint">Hébergement + repas + activités tout compris</p>
+      <div class="slider-wrap">
+        <div class="slider-labels"><span>🥜 20€/jour</span><span>💎 200€/jour</span></div>
+        <input type="range" id="bSlider" min="20" max="200" value="50" step="5" oninput="updB(this.value)">
+        <div class="slider-val" id="bVal">50€ / jour</div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="prv(1)">← Retour</button><button class="btn-next" onclick="nxt(3)">Suivant →</button></div>
+    </div>
+    <div class="step" data-step="3">
+      <p class="step-q">Combien de temps tu pars ?</p><p class="step-hint">Sois réaliste avec tes dispo 😄</p>
+      <div class="opts">
+        <div class="opt" onclick="sel(this,'duree','weekend')"><span class="opt-emoji">📅</span><div class="opt-label">Long week-end</div><div class="opt-sub">3–5 jours</div></div>
+        <div class="opt" onclick="sel(this,'duree','semaine')"><span class="opt-emoji">🗓️</span><div class="opt-label">1 semaine</div><div class="opt-sub">6–10 jours</div></div>
+        <div class="opt" onclick="sel(this,'duree','deuxsemaines')"><span class="opt-emoji">🌍</span><div class="opt-label">2 semaines</div><div class="opt-sub">11–18 jours</div></div>
+        <div class="opt" onclick="sel(this,'duree','mois')"><span class="opt-emoji">🎒</span><div class="opt-label">1 mois +</div><div class="opt-sub">Grand voyage</div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="prv(2)">← Retour</button><button class="btn-next" id="bn3" disabled onclick="nxt(4)">Suivant →</button></div>
+    </div>
+    <div class="step" data-step="4">
+      <p class="step-q">Tu pars avec qui ?</p><p class="step-hint">Ça change tout à la destination</p>
+      <div class="opts">
+        <div class="opt" onclick="sel(this,'compagnie','solo')"><span class="opt-emoji">🦅</span><div class="opt-label">Solo</div><div class="opt-sub">Liberté totale</div></div>
+        <div class="opt" onclick="sel(this,'compagnie','couple')"><span class="opt-emoji">💑</span><div class="opt-label">En couple</div><div class="opt-sub">Aventure à deux</div></div>
+        <div class="opt" onclick="sel(this,'compagnie','amis')"><span class="opt-emoji">🎉</span><div class="opt-label">Entre amis</div><div class="opt-sub">Groupe de potes</div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="prv(3)">← Retour</button><button class="btn-next" id="bn4" disabled onclick="nxt(5)">Suivant →</button></div>
+    </div>
+    <div class="step" data-step="5">
+      <p class="step-q">Tu pars quand ?</p><p class="step-hint">Pour te proposer les meilleurs spots selon la météo</p>
+      <div class="opts">
+        <div class="opt" onclick="sel(this,'saison','printemps')"><span class="opt-emoji">🌸</span><div class="opt-label">Printemps</div><div class="opt-sub">Mars – Mai</div></div>
+        <div class="opt" onclick="sel(this,'saison','ete')"><span class="opt-emoji">☀️</span><div class="opt-label">Été</div><div class="opt-sub">Juin – Août</div></div>
+        <div class="opt" onclick="sel(this,'saison','automne')"><span class="opt-emoji">🍂</span><div class="opt-label">Automne</div><div class="opt-sub">Sept – Nov</div></div>
+        <div class="opt" onclick="sel(this,'saison','hiver')"><span class="opt-emoji">❄️</span><div class="opt-label">Hiver</div><div class="opt-sub">Déc – Fév</div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="prv(4)">← Retour</button><button class="btn-next" id="bn5" disabled onclick="nxt(6)">Suivant →</button></div>
+    </div>
+    <div class="step" data-step="6">
+      <p class="step-q">Plutôt quel continent ?</p><p class="step-hint">Ou laisse-nous te surprendre !</p>
+      <div class="opts">
+        <div class="opt" onclick="sel(this,'continent','asie')"><span class="opt-emoji">🌏</span><div class="opt-label">Asie</div><div class="opt-sub">SE Asia, Inde, Caucase</div></div>
+        <div class="opt" onclick="sel(this,'continent','europe')"><span class="opt-emoji">🇪🇺</span><div class="opt-label">Europe</div><div class="opt-sub">Balkans, Est, Portugal</div></div>
+        <div class="opt" onclick="sel(this,'continent','amerique')"><span class="opt-emoji">🌎</span><div class="opt-label">Amériques</div><div class="opt-sub">Sud, Centrale, Caraïbes</div></div>
+        <div class="opt" onclick="sel(this,'continent','afrique')"><span class="opt-emoji">🌍</span><div class="opt-label">Afrique</div><div class="opt-sub">Nord, Est, Ouest</div></div>
+        <div class="opt" onclick="sel(this,'continent','tout')"><span class="opt-emoji">🎲</span><div class="opt-label">Surprends-moi !</div><div class="opt-sub">Best match mondial</div></div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="prv(5)">← Retour</button><button class="btn-next" id="bn6" disabled onclick="nxt(7)">Suivant →</button></div>
+    </div>
+    <div class="step" data-step="7">
+      <p class="step-q">Parfait, on a ton profil ! ✨</p><p class="step-hint">Prêt·e à découvrir ta destination ?</p>
+      <div style="margin:1.8rem 0"><div id="recap" style="background:#fff;border-radius:14px;padding:1.3rem;box-shadow:0 2px 16px rgba(0,0,0,0.04)"></div></div>
+      <div style="text-align:center;margin-top:1.8rem"><button class="btn-gen" onclick="generate()">✦ Révéler ma destination</button></div>
+      <div class="nav" style="margin-top:1.3rem"><button class="btn-back" onclick="prv(6)">← Modifier</button><div></div></div>
+    </div>
+  </div>
+</section>
+<section class="load-sec" id="loadSec"><div class="spin"></div><p class="load-msg" id="loadMsg">Analyse de ton profil...</p><div class="dots"><span></span><span></span><span></span></div></section>
+<section class="res-sec" id="resSec">
+  <div class="res-hero"><img id="rImg" src="" alt=""><div class="res-overlay"><div class="res-hero-txt"><div class="res-tag" id="rTag"></div><h2 id="rTitle"></h2><p class="res-sub-txt" id="rSub"></p></div></div></div>
+  <div class="res-body">
+    <div class="match-wrap"><div class="match-num" id="rScore">95<span>%</span></div><div class="match-info"><h3>Match avec ton profil backpacker</h3><p id="rMatchP"></p></div></div>
+    <div class="info-grid" id="rInfo"></div>
+    <div class="cb"><h3>📖 Histoire & identité</h3><p id="rHist"></p></div>
+    <div class="cb"><h3>🎯 Activités incontournables</h3><div class="act-list" id="rActs"></div></div>
+    <div class="cb"><h3>💡 Pourquoi cette destination pour toi</h3><p id="rWhy"></p></div>
+    <div class="cb"><h3>🍜 Où & quoi manger</h3><p id="rFood"></p><div class="tags" id="rFoodTags"></div><h4>🏠 Où dormir pas cher</h4><p id="rSleep"></p></div>
+    <div class="cb"><h3>🚌 Comment se déplacer</h3><div id="rTransport"></div></div>
+    <div class="cb"><h3>💸 Budget & argent</h3><div id="rMoney"></div></div>
+    <div class="cb"><h3>📅 Événements culturels</h3><div id="rEvents"></div></div>
+    <div class="cb"><h3>💰 Budget journalier estimé</h3><div id="rBudget"></div></div>
+    <div class="cb"><h3>📱 Apps indispensables</h3><div class="app-grid" id="rApps"></div></div>
+    <div class="cb"><h3>✅ Points forts</h3><div class="tags" id="rPros"></div><h4 style="margin-top:1rem">⚠️ Arnaques à éviter</h4><div class="warn" id="rScams"></div></div>
+    <div class="cb"><h3>🗣️ Phrases utiles</h3><div id="rPhrases"></div></div>
+    <div class="cta-grid"><button class="cta-btn cta-p" onclick="restart()">🔄 Recommencer</button><button class="cta-btn cta-s" onclick="copyRes()">📋 Copier le résumé</button></div>
+  </div>
+</section>
+<script>
+const A = {vibe:null,budget:50,duree:null,compagnie:null,saison:null,continent:null};
+
+const DB = [
+{
+  id:"vietnam",name:"Vietnam",country:"Vietnam",continent:"asie",
+  tag:"La Perle Indochinoise",region:"Asie du Sud-Est",
+  vibe:["culture","aventure","city","nature"],
+  budgetMin:25,budgetMax:80,
+  duree:["semaine","deuxsemaines","mois"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","automne","hiver"],
+  heroImg:"https://images.unsplash.com/photo-1555921015-5532091f6026?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~11h"},{icon:"🌡️",label:"Température",value:"20–35°C"},{icon:"💱",label:"Monnaie",value:"Dong VND"},{icon:"🛂",label:"Visa",value:"E-visa 25€/30j"},{icon:"📶",label:"Connexion",value:"Très bonne"},{icon:"🏥",label:"Vaccins",value:"Hépatites A/B"}],
+  histoire:"Le Vietnam a résisté à plus de 1000 ans de domination chinoise, puis à la colonisation française (1858–1954), puis à la guerre américaine (1955–1975). La victoire de 1975 réunifie le pays sous régime communiste. Aujourd'hui, le Doi Moi (réforme économique de 1986) a transformé le pays en l'une des économies les plus dynamiques d'Asie. Les Vietnamiens sont fiers de n'avoir jamais été définitivement conquis.",
+  activites:[
+    {emoji:"🧵",name:"Vêtements sur mesure à Hoi An",price:"15–50€",desc:"Les tailleurs de Hoi An fabriquent robes, costumes et sacs en 24–48h. Rue Tran Phu et alentours — comparer 3 boutiques avant de choisir.",tip:"Apporte une photo de ce que tu veux, c'est plus simple"},
+    {emoji:"⛵",name:"Croisière baie d'Ha Long",price:"50–120€/2j",desc:"Nuit sur jonque en bois entre les karsts calcaires. Kayak dans les grottes, coucher de soleil sur l'eau. Réserve depuis Hanoi.",tip:"Évite les croisières à moins de 50€ — qualité zéro"},
+    {emoji:"🏍️",name:"Rando moto au nord (Sapa/Ha Giang)",price:"8–15€/jour scooter",desc:"Ha Giang Loop : 4 jours de route dans les montagnes parmi les minorités ethniques. Le plus beau paysage du pays.",tip:"Prends un guide local moto pour Ha Giang — routes techniques"},
+    {emoji:"🏛️",name:"Visite des tunnels de Cu Chi",price:"6€",desc:"200km de tunnels creusés par le Viet Cong pendant la guerre. Près de Ho Chi Minh-Ville. Guide inclus, expérience édifiante.",tip:"Y aller le matin pour éviter la foule"},
+    {emoji:"🍜",name:"Cours de cuisine vietnamienne",price:"20–35€",desc:"À Hoi An ou Hanoi — marché le matin + cuisine + déjeuner. Apprends à faire le phở, les nem et le bánh mì.",tip:"Morning Glory Cooking School à Hoi An — recommandé"}
+  ],
+  why:"Le Vietnam est LE pays backpacker par excellence. 3000km du nord au sud, prix imbattables, bouffe de folie et paysages hallucinants.",
+  food:"Mange dans les gargotes sans menu anglais — signe de prix locaux. Phở à 1€, bánh mì à 0.80€, bún bò huế à 1.50€. À Hoi An, le cao lầu et les white rose dumplings sont incontournables. Cherche les tabourets en plastique dans la rue.",
+  foodTags:["Phở 1€","Bánh Mì 0.80€","Bún Bò","Cao Lầu","Gỏi Cuốn","Cà Phê Trứng","Bia Hơi 0.30€"],
+  sleep:"Dortoirs 5–8€ sur Hostelworld. Guest houses familiales : chambre privée 12–18€. Cherche les ruelles parallèles aux rues touristiques — 30% moins cher.",
+  transport:[{icon:"🚌",mode:"Bus couchette",desc:"Hanoi→Hoi An 10–14€, voyage de nuit = nuit d'hôtel économisée.",platform:"Baolau · Bookaway"},{icon:"🛵",mode:"Scooter",desc:"5–8€/jour partout. Indispensable hors des villes.",platform:"Louer localement"},{icon:"✈️",mode:"Vols intérieurs",desc:"VietJet : Hanoi→HCMV à partir de 15€ réservé à l'avance.",platform:"Skyscanner · VietJet.com"}],
+  money:[{label:"Revolut / Wise",sub:"Pas de frais de change",val:"✅ Top"},{label:"Retrait DAB",sub:"Vietcombank — max 2M VND par retrait",val:"~2€ frais"},{label:"Cash",sub:"Indispensable dans les marchés et gargotes",val:"Toujours avoir"},{label:"Change",sub:"Évite les bureaux touristiques — va en banque",val:"⚠️ Banque"}],
+  events:[{saisons:["hiver","printemps"],date:"Jan–Fév",name:"Tết — Nouvel An vietnamien",desc:"La fête la plus importante. Feux d'artifice, offrandes, décorations. Attention : tout ferme pendant 1 semaine."},{saisons:["printemps"],date:"Mars",name:"Hoi An Lantern Festival",desc:"Pleine lune + milliers de lanternes flottantes dans la vieille ville. Gratuit et magique."},{saisons:["automne"],date:"Oct–Nov",name:"Meilleure saison",desc:"Météo parfaite dans tout le pays — la période idéale pour traverser le Vietnam."}],
+  budget:[{label:"Dortoir auberge",amount:"5–8€/nuit"},{label:"Guest house privée",amount:"12–18€/nuit"},{label:"Street food",amount:"1–3€/repas"},{label:"Bus couchette inter-villes",amount:"10–15€"},{label:"Scooter/jour",amount:"5–8€"},{label:"💰 Budget total",amount:"25–45€/jour"}],
+  apps:[{icon:"🚗",name:"Grab"},{icon:"🗺️",name:"Maps.me"},{icon:"💱",name:"XE Currency"},{icon:"🌐",name:"Google Translate"},{icon:"🚌",name:"Baolau"},{icon:"🏨",name:"Hostelworld"}],
+  pros:["Budget ultra bas","Gastronomie top","3000km de variété","Gens accueillants","Ha Long Bay","Hoi An magique"],
+  scams:"🔴 Grab obligatoire — jamais de taxi sans compteur à l'aéroport. 🔴 Ha Long : évite les croisières sous 50€. 🔴 Cyclo-pousse : négocie le prix AVANT de monter. 🔴 Moto-taxi : confirme le prix avant de partir.",
+  phrases:[{local:"Xin chào",fr:"Bonjour"},{local:"Cảm ơn",fr:"Merci"},{local:"Bao nhiêu tiền?",fr:"C'est combien ?"},{local:"Không cảm ơn",fr:"Non merci"},{local:"Ngon lắm!",fr:"C'est délicieux !"}]
+},
+{
+  id:"maroc",name:"Maroc",country:"Maroc",continent:"afrique",
+  tag:"La Porte de l'Afrique",region:"Afrique du Nord",
+  vibe:["culture","nature","city","aventure"],
+  budgetMin:25,budgetMax:75,
+  duree:["weekend","semaine","deuxsemaines"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","automne","hiver"],
+  heroImg:"https://images.unsplash.com/photo-1539020140153-e479b8f22986?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~3h30"},{icon:"🌡️",label:"Température",value:"15–38°C"},{icon:"💱",label:"Monnaie",value:"Dirham MAD"},{icon:"🛂",label:"Visa",value:"Gratuit 90j"},{icon:"📶",label:"Connexion",value:"Bonne"},{icon:"🏥",label:"Vaccins",value:"Aucun obligatoire"}],
+  histoire:"Carrefour de civilisations depuis l'Antiquité — Berbères, Phéniciens, Romains, Arabes, puis empire chérifien. Le Maroc est le seul pays d'Afrique du Nord à n'avoir jamais été totalement colonisé (protectorat français 1912–1956, pas colonie). La culture berbère millénaire résiste et coexiste avec l'influence arabe-andalouse. Marrakech fut fondée en 1062 par les Almoravides.",
+  activites:[
+    {emoji:"🏪",name:"Marchander dans les souks de Marrakech",price:"Gratuit",desc:"Les souks thématiques : cuivre, épices, babouches, tapis. La médina est classée UNESCO. Le prix annoncé est toujours 3–5x le vrai prix.",tip:"Commence à offrir 30% du prix demandé, tu finiras à 50%"},
+    {emoji:"🐪",name:"Nuit dans le désert de Merzouga",price:"40–80€",desc:"Bus CTM de nuit depuis Marrakech (12€), dunes de l'Erg Chebbi, bivouac sous les étoiles, lever de soleil à dos de dromadaire.",tip:"Réserve le bivouac depuis Marrakech pour avoir un meilleur prix"},
+    {emoji:"🏔️",name:"Trek dans l'Atlas (Toubkal)",price:"30–60€/jour guide",desc:"Le Toubkal est le plus haut sommet d'Afrique du Nord (4167m). Accessible depuis Imlil en 2 jours. Guide local recommandé.",tip:"Meilleure saison : mai–octobre hors neige"},
+    {emoji:"♨️",name:"Hammam traditionnel",price:"5–15€",desc:"Les hammams de quartier (pas les touristiques) coûtent 5–8€ avec gommage. Demande au riad où aller pour l'expérience authentique.",tip:"Évite les hammams affichés en anglais — cherche ceux du quartier"},
+    {emoji:"🌊",name:"Surf à Taghazout",price:"25–40€/cours",desc:"Le spot surf le plus connu du Maroc, au nord d'Agadir. Vagues pour tous niveaux, école de surf en bord de plage, ambiance relax.",tip:"Logement + cours : des packages à 40€/jour existent"}
+  ],
+  why:"À 3h30 de Paris, dépaysement total sans jet-lag. Médinas classées UNESCO, désert de sable, montagne de l'Atlas, côte atlantique — tout ça dans un seul pays.",
+  food:"Gargotes autour de la place Djemaa el-Fna : harira + merguez + tajine pour 3–5€. Boulangeries : pain chaud 0.20€. Jus d'orange frais sur la place : 0.50€. Fuis les restaurants avec rabatteurs à l'entrée.",
+  foodTags:["Tajine 3€","Harira","Couscous","Mechoui","Msemen","Pastilla","Thé menthe 0.50€"],
+  sleep:"Riads en dortoir dans la médina : 8–15€/nuit. Maisons d'hôtes hors médina : 30% moins cher. Hostelworld et Booking fonctionnent bien.",
+  transport:[{icon:"🚌",mode:"CTM / Supratours",desc:"Bus fiables entre grandes villes. Marrakech→Essaouira 5€, →Merzouga 12€.",platform:"CTM.ma · Supratours"},{icon:"🚕",mode:"Grand Taxi",desc:"Taxis collectifs entre villes moyennes. Négocier le prix avant.",platform:"Sur place"},{icon:"🚂",mode:"Train ONCF",desc:"Très confortable Casablanca–Rabat–Fès–Tanger.",platform:"ONCF.ma"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→MAD",val:"✅ Top"},{label:"Retrait DAB",sub:"Wafa Bank, Attijariwafa — bien présentes",val:"~2€ frais"},{label:"Cash",sub:"Indispensable souks et transports",val:"Toujours avoir"},{label:"Négocier",sub:"OBLIGATOIRE dans les souks",val:"⚠️ Systématique"}],
+  events:[{saisons:["ete"],date:"Juin",name:"Festival Gnaoua d'Essaouira",desc:"Festival de musique transe mystique, partiellement gratuit. Ambiance électrique au bord de l'Atlantique."},{saisons:["printemps"],date:"Avril–Mai",name:"Festival des Roses (Kelaat M'Gouna)",desc:"La vallée se couvre de roses — défilé, musique, élection de la Rose."},{saisons:["hiver"],date:"Déc–Fév",name:"Meilleure saison villes",desc:"Températures parfaites dans les villes, désert accessible. Noël au Sahara : expérience unique."}],
+  budget:[{label:"Riad en dortoir",amount:"8–15€/nuit"},{label:"Chambre privée riad",amount:"20–40€/nuit"},{label:"Repas gargote",amount:"2–5€"},{label:"Bus CTM inter-villes",amount:"5–12€"},{label:"Taxi en ville",amount:"1–3€"},{label:"💰 Budget total",amount:"30–55€/jour"}],
+  apps:[{icon:"🗺️",name:"Maps.me"},{icon:"💱",name:"XE Currency"},{icon:"🚌",name:"CTM.ma"},{icon:"🌐",name:"Google Translate"},{icon:"🏨",name:"Booking.com"},{icon:"📷",name:"Google Lens"}],
+  pros:["3h30 de Paris","Dépaysement total","Budget abordable","Médinas UNESCO","Désert & montagne","Cuisine délicieuse"],
+  scams:"🔴 Faux guides dans la médina — quelqu'un qui t'aborde 'juste pour t'aider' finira par te facturer. 🔴 Taxis sans compteur. 🔴 Souks : premier prix toujours 3–5x trop cher. 🔴 Singes et serpents sur la place : ils te réclameront de l'argent dès que tu t'approches.",
+  phrases:[{local:"Salam alaikum",fr:"Bonjour"},{local:"Shukran",fr:"Merci"},{local:"Bchhal?",fr:"C'est combien ?"},{local:"La, shukran",fr:"Non merci"},{local:"Zwina bzzaf",fr:"C'est très beau"}]
+},
+{
+  id:"georgie",name:"Géorgie",country:"Géorgie",continent:"europe",
+  tag:"Le Joyau du Caucase",region:"Caucase",
+  vibe:["montagne","culture","nature","city"],
+  budgetMin:30,budgetMax:85,
+  duree:["semaine","deuxsemaines"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","ete","automne"],
+  heroImg:"https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~5h"},{icon:"🌡️",label:"Température",value:"10–35°C"},{icon:"💱",label:"Monnaie",value:"Lari GEL"},{icon:"🛂",label:"Visa",value:"Gratuit 1 an"},{icon:"📶",label:"Connexion",value:"Très bonne"},{icon:"🏥",label:"Vaccins",value:"Aucun obligatoire"}],
+  histoire:"La Géorgie est l'une des plus vieilles nations du monde — le vin y est produit depuis 8000 ans (invention du qvevri, amphore enterrée). Première nation à adopter officiellement le christianisme en 337 ap. J-C. Envahie par les Mongols, les Perses, les Ottomans puis annexée par la Russie en 1801. Indépendante depuis 1991, elle résiste à l'influence russe (guerre de 2008) et regarde vers l'Europe.",
+  activites:[
+    {emoji:"🏔️",name:"Trek à Kazbegi (Stepantsminda)",price:"3€ transport",desc:"Marshrutka depuis Tbilissi (3€), randonnée jusqu'à l'église Guerguéti à 2170m avec vue sur le Caucase enneigé. Inoubliable.",tip:"Pars tôt le matin pour éviter les nuages qui cachent la montagne"},
+    {emoji:"🍷",name:"Route des vins en Kakhétie",price:"10–25€ dégustation",desc:"La Kakhétie est le berceau du vin mondial. Visite des caves familiales avec dégustation de vin nature dans des amphores enterrées.",tip:"Sighnaghi est la plus belle ville viticole — y passer la nuit"},
+    {emoji:"♨️",name:"Bains de soufre à Tbilissi",price:"3–8€",desc:"Les bains d'Abanotubani sont les bains sulfureux chauds naturels qui ont donné son nom à Tbilissi ('eau chaude'). Expérience unique.",tip:"Prends une cabine privée (8€/h) plutôt que le bain commun"},
+    {emoji:"🏛️",name:"Monastère de Vardzia",price:"5€ entrée",desc:"Ville-monastère rupestre du 12ème siècle creusée dans la falaise basaltique. 3000 appartements, 13 étages, 500 grottes habitables.",tip:"Combine avec le château de Rabati à Akhaltsikhe en route"},
+    {emoji:"🎶",name:"Soirée polyphonie géorgienne",price:"15–25€",desc:"Le chant polyphonique géorgien est classé au patrimoine UNESCO. Des ensembles se produisent régulièrement à Tbilissi.",tip:"Restaurant Barbarestan à Tbilissi : cuisine + polyphonie en soirée"}
+  ],
+  why:"La Géorgie est le secret le mieux gardé d'Europe. Visa gratuit 1 an, prix très bas, Caucase spectaculaire, gastronomie de folie. À 5h de Paris, encore peu touristique.",
+  food:"Khinkali (ravioli géant) : 0.30€ pièce, un repas = 8–10 khinkali. Khachapuri (pain au fromage) : 2–3€. Un repas + vin local dans un restaurant : 8–12€. Marché Dezerter à Tbilissi pour fromages, noix et churchkhela.",
+  foodTags:["Khinkali 0.30€","Khachapuri","Mtsvadi","Badrijani","Churchkhela","Vin Qvevri","Chacha"],
+  sleep:"Auberges à Tbilissi dès 8€ (Fabrika Hostel, la plus connue). Guesthouses à Kazbegi avec petit-déj 15–25€. Airbnb très abordable partout.",
+  transport:[{icon:"🚐",mode:"Marshrutka",desc:"Mini-vans collectifs. Tbilissi→Kazbegi 3€, →Kakhétie 4€. Départ quand c'est plein.",platform:"Gare routière Didube"},{icon:"🚗",mode:"Bolt / Yandex",desc:"Équivalent Uber à Tbilissi. Toujours moins cher que taxi.",platform:"App Bolt · Yandex Go"},{icon:"🚂",mode:"Train",desc:"Tbilissi→Batoumi (mer Noire) 8€ en nuit couchette.",platform:"Railway.ge"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→GEL",val:"✅ Top"},{label:"Retrait DAB",sub:"Bank of Georgia, TBC Bank — pas de frais côté géorgien",val:"Gratuit"},{label:"Cash",sub:"Utile marchés et marshrutkas",val:"Garder du cash"},{label:"Carte",sub:"Acceptée dans tous les commerces de Tbilissi",val:"✅ OK"}],
+  events:[{saisons:["printemps"],date:"Avril",name:"Pâques Orthodoxe",desc:"Processions avec bougies dans la nuit — dans toutes les églises. Moment émouvant et unique."},{saisons:["ete"],date:"Juil–Août",name:"Tbilisi Open Air Festival",desc:"Festival électronique dans des usines abandonnées — réputé dans toute l'Europe."},{saisons:["automne"],date:"Octobre",name:"Rtveli — Vendanges",desc:"La récolte du raisin est une fête nationale en Kakhétie. Les familles ouvrent leurs caves, tout le monde participe."}],
+  budget:[{label:"Auberge dortoir",amount:"8–14€/nuit"},{label:"Guesthouse privée",amount:"20–40€/nuit"},{label:"Khinkali (repas)",amount:"3–5€"},{label:"Restaurant + vin",amount:"8–14€"},{label:"Marshrutka inter-villes",amount:"3–6€"},{label:"💰 Budget total",amount:"35–60€/jour"}],
+  apps:[{icon:"🚗",name:"Bolt"},{icon:"🚗",name:"Yandex Go"},{icon:"🗺️",name:"Maps.me"},{icon:"🌐",name:"Google Translate"},{icon:"💱",name:"XE Currency"},{icon:"🏨",name:"Hostelworld"}],
+  pros:["Visa 1 an gratuit","Très peu cher","Caucase spectaculaire","Gastronomie unique","Peu touristique","Hospitalité légendaire"],
+  scams:"La Géorgie est l'un des pays les plus sûrs au monde. 🟡 Seul vrai piège : taxis à l'aéroport — prends toujours Bolt. 🟡 Les prix des antiquités au marché Dry Bridge sont négociables. C'est à peu près tout.",
+  phrases:[{local:"Gamarjoba",fr:"Bonjour"},{local:"Madloba",fr:"Merci"},{local:"Ra ghirs?",fr:"Combien ?"},{local:"Ara, gmadlobt",fr:"Non merci"},{local:"Gaumarjos!",fr:"Santé !"}]
+},
+{
+  id:"serbie",name:"Serbie",country:"Serbie",continent:"europe",
+  tag:"Le Cœur des Balkans",region:"Europe du Sud-Est",
+  vibe:["city","culture","nature","aventure"],
+  budgetMin:20,budgetMax:65,
+  duree:["weekend","semaine","deuxsemaines"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","ete","automne"],
+  heroImg:"https://images.unsplash.com/photo-1555990793-da11153b6dea?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~2h30"},{icon:"🌡️",label:"Température",value:"5–35°C"},{icon:"💱",label:"Monnaie",value:"Dinar RSD"},{icon:"🛂",label:"Visa",value:"Gratuit 90j"},{icon:"📶",label:"Connexion",value:"Excellente"},{icon:"🏥",label:"Vaccins",value:"Aucun"}],
+  histoire:"Au carrefour de l'Orient et de l'Occident, la Serbie fut au cœur de l'empire byzantin puis ottoman (5 siècles de domination). L'assassinat de l'archiduc François-Ferdinand à Sarajevo en 1914 déclencha la Première Guerre mondiale. Cœur de la Yougoslavie de Tito (1945–1991), la Serbie traverse les guerres des Balkans dans les années 90. Belgrade fut bombardée par l'OTAN en 1999. Aujourd'hui candidate à l'UE.",
+  activites:[
+    {emoji:"🏰",name:"Forteresse de Kalemegdan",price:"Gratuit",desc:"La forteresse médiévale surplombant la confluence Sava-Danube. Musées, parcs, vue imprenable. Le symbole de Belgrade.",tip:"Coucher de soleil depuis la forteresse : le meilleur de Belgrade"},
+    {emoji:"🎵",name:"Festival EXIT à Novi Sad",price:"60–100€/pass 4j",desc:"L'un des meilleurs festivals de musique d'Europe dans la forteresse de Petrovaradin. Juillet. 300+ artistes.",tip:"Réserve l'hébergement 3 mois à l'avance — Novi Sad est bondé"},
+    {emoji:"🌊",name:"Parc national de Tara",price:"Bus 8€",desc:"Gorges de la Drina, forêts de sapins centenaires, villages traditionnels. Randonnée et kayak dans les rapides.",tip:"Loue un vélo à Bajina Bašta pour explorer le parc"},
+    {emoji:"🍺",name:"Nuit dans les splavovi (clubs flottants)",price:"Entrée gratuit–10€",desc:"Les splavovi sont des clubs sur péniches amarrées sur la Sava. La vie nocturne la plus intense d'Europe selon Lonely Planet.",tip:"La 'saison' des splavovi commence en mai — les meilleurs : Freestyler, Šećer"},
+    {emoji:"🎨",name:"Quartier bohème de Skadarlija",price:"Repas 8–15€",desc:"La rue bohème de Belgrade avec ses pavés, ses kafanas (bistrots traditionnels) et ses musiciens de rue. Ambiance 19ème siècle.",tip:"Y dîner un soir pour l'ambiance — commande la pljeskavica XXL"}
+  ],
+  why:"Belgrade est la capitale européenne la moins chère pour la vie nocturne. À 2h30 de Paris, une ville qui ne dort jamais, des forteresses médiévales et une gastronomie balkanique copieuse.",
+  food:"Burek (feuilleté viande/fromage) : 0.80€ — le petit-déj du backpacker. Pljeskavica (hamburger XXL) : 2–3€. Kafana (bistrot traditionnel) : repas complet avec boisson 5–7€. La rakija (eau de vie de prune) est offerte partout en signe de bienvenue.",
+  foodTags:["Burek 0.80€","Pljeskavica 2€","Ćevapi","Ajvar","Sarma","Kajmak","Rakija offerte"],
+  sleep:"Auberges à Belgrade 8–12€ (Generator, Hedonist). Appartements Airbnb très abordables 25–40€/nuit en centre. Dans la campagne, guesthouses avec petit-déj 15–25€.",
+  transport:[{icon:"🚌",mode:"Bus inter-villes",desc:"Réseau excellent. Belgrade→Novi Sad 4€, →Niš 7€.",platform:"BusTicket4.me"},{icon:"🚂",mode:"Train",desc:"Lent mais pittoresque. Belgrade→Bar (Monténégro) 15€ nuit — l'un des plus beaux trajets d'Europe.",platform:"SRBvoz.rs"},{icon:"🚗",mode:"Bolt",desc:"Disponible à Belgrade. Toujours moins cher que taxi traditionnel.",platform:"App Bolt"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→RSD",val:"✅ Top"},{label:"Retrait DAB",sub:"Banca Intesa, UniCredit — peu de frais",val:"~1€ frais"},{label:"Cash",sub:"Marchés et kafanas en cash",val:"Garder du cash"},{label:"Euro",sub:"Parfois accepté mais mieux payer en dinars",val:"🟡 Selon lieu"}],
+  events:[{saisons:["ete"],date:"Juillet",name:"Festival EXIT (Novi Sad)",desc:"4 jours, 300+ artistes dans la forteresse de Petrovaradin. L'un des meilleurs festivals d'Europe."},{saisons:["ete"],date:"Août",name:"Beer Fest Belgrade",desc:"Le plus grand festival de bière d'Europe de l'Est — entrée gratuite, musique live."},{saisons:["hiver"],date:"14 Janvier",name:"Nouvel An Orthodoxe",desc:"Feux d'artifice et fête dans toute la ville pour le Nouvel An du calendrier julien."}],
+  budget:[{label:"Auberge dortoir",amount:"8–12€/nuit"},{label:"Appartement Airbnb",amount:"25–40€/nuit"},{label:"Burek (petit-déj)",amount:"0.80€"},{label:"Repas kafana",amount:"5–8€"},{label:"Bière locale",amount:"0.80–1.50€"},{label:"💰 Budget total",amount:"25–45€/jour"}],
+  apps:[{icon:"🚗",name:"Bolt"},{icon:"🗺️",name:"Google Maps"},{icon:"💱",name:"XE Currency"},{icon:"🏨",name:"Hostelworld"},{icon:"🚌",name:"BusTicket4.me"},{icon:"🎵",name:"EXIT App"}],
+  pros:["2h30 de Paris","Prix ultra bas","Vie nocturne légendaire","Forteresses médiévales","Gens chaleureux","Gastronomie copieuse"],
+  scams:"🟡 Taxis aéroport : prends Bolt — sinon 3x le prix. 🟡 Échangeurs à l'aéroport : taux catastrophiques. La Serbie est très sûre, peu d'arnaques.",
+  phrases:[{local:"Zdravo",fr:"Bonjour"},{local:"Hvala",fr:"Merci"},{local:"Koliko košta?",fr:"C'est combien ?"},{local:"Ne hvala",fr:"Non merci"},{local:"Živeli!",fr:"Santé !"}]
+},
+{
+  id:"perou",name:"Pérou",country:"Pérou",continent:"amerique",
+  tag:"L'Empire des Incas",region:"Amérique du Sud",
+  vibe:["culture","montagne","aventure","nature"],
+  budgetMin:30,budgetMax:90,
+  duree:["deuxsemaines","mois"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","ete","hiver"],
+  heroImg:"https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~12–14h"},{icon:"🌡️",label:"Température",value:"5–28°C selon altitude"},{icon:"💱",label:"Monnaie",value:"Sol PEN"},{icon:"🛂",label:"Visa",value:"Gratuit 90j"},{icon:"📶",label:"Connexion",value:"Bonne en ville"},{icon:"🏥",label:"Vaccins",value:"Fièvre jaune conseillée"}],
+  histoire:"Le Pérou est le berceau de l'une des plus grandes civilisations du monde : l'Empire Inca (1438–1533), qui s'étendait sur 5000km des Andes. Francisco Pizarro et 168 conquistadors espagnols renversèrent un empire de 12 millions d'habitants. La colonisation détruisit 90% de la population indigène. Le Pérou indépendant depuis 1821 lutte encore pour intégrer son héritage quechua, toujours vivant dans les Andes.",
+  activites:[
+    {emoji:"🏛️",name:"Machu Picchu",price:"45–50€ entrée",desc:"La cité inca perchée à 2430m dans les nuages. Achète le billet UNIQUEMENT sur machupicchu.gob.pe — les revendeurs fakent des billets.",tip:"Réserve 2–3 mois à l'avance en haute saison (juin–août)"},
+    {emoji:"🥾",name:"Trek Inca Trail (4 jours)",price:"550–700€ tout compris",desc:"4 jours de marche dans les Andes jusqu'à Machu Picchu par les anciennes routes incas. Inclut guide, porteurs, repas.",tip:"Réserve 6 mois à l'avance — les 500 places/jour partent très vite"},
+    {emoji:"🚢",name:"Lac Titicaca & îles Uros",price:"15–25€ excursion",desc:"Le lac navigable le plus haut du monde (3810m). Îles flottantes des Uros construites en roseaux totora. Nuit chez l'habitant sur l'île de Taquile.",tip:"Évite les tours organisés depuis Puno — loue un bateau local"},
+    {emoji:"🦅",name:"Survol des lignes de Nazca",price:"80–120€",desc:"Les géoglyphes mystérieux tracés dans le désert il y a 2000 ans. Survol en petit avion depuis la ville de Nazca (5h de Lima en bus).",tip:"Vol tôt le matin pour éviter les turbulences — le ventre vide c'est mieux"},
+    {emoji:"🍽️",name:"Marché de San Pedro à Cusco",price:"Entrée libre",desc:"Le marché couvert le plus authentique de Cusco. Jus de fruits frais 0.50€, menu complet 2–3€, artisanat local sans intermédiaire.",tip:"Mange au niveau -1 avec les locaux — les meilleurs menus du marché"}
+  ],
+  why:"Machu Picchu, lac Titicaca, lignes de Nazca, Amazonie — le Pérou c'est un concentré de merveilles mondiales. Et Lima est classée capitale gastronomique de l'Amérique Latine.",
+  food:"Menu du marché couvert : soupe + plat + boisson 2–3€. Ceviche frais dans les cevicherias de Lima : 8–12€. Lomo saltado (sauté de bœuf) partout : 5–8€. Anti-uchos (brochettes de cœur de bœuf) dans la rue : 1€.",
+  foodTags:["Ceviche","Lomo Saltado","Aji de Gallina","Causa","Anticuchos 1€","Pisco Sour","Chicha Morada"],
+  sleep:"Cusco : excellentes auberges à 8–12€ (Loki Hostel légendaire). Lima : Miraflores a des hostels corrects. Alojamientos (guesthouses familiales) dans les petites villes : chambre privée 10–15€.",
+  transport:[{icon:"🚌",mode:"Bus couchette Cruz del Sur",desc:"Lima→Cusco 15–25€ en nuit. Confort variable selon classe.",platform:"Redbus.pe · CruzdelSur.com.pe"},{icon:"🚂",mode:"Train Machu Picchu",desc:"PeruRail depuis Ollantaytambo à partir de 50€ aller. Réserve tôt.",platform:"Perurail.com"},{icon:"🛵",mode:"Mototaxi",desc:"Dans les petites villes : 0.50€ la course locale.",platform:"Sur place"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→PEN",val:"✅ Top"},{label:"Retrait DAB",sub:"BCP et Interbank. Max 400 soles.",val:"~2€ frais"},{label:"Cash",sub:"Indispensable marchés, transports, zones rurales",val:"Toujours avoir"},{label:"Dollar US",sub:"Accepté dans les lieux touristiques",val:"🟡 Utile"}],
+  events:[{saisons:["hiver"],date:"24 Juin",name:"Inti Raymi — Fête du Soleil",desc:"Le plus grand festival inca reconstitué à Cusco et Sacsayhuamán. Des milliers de participants en costume. Spectacle unique."},{saisons:["printemps"],date:"Octobre",name:"Seigneur des Miracles (Lima)",desc:"Plus grande procession catholique d'Amérique du Sud — des centaines de milliers de fidèles en violet."},{saisons:["ete"],date:"Juillet",name:"Fiestas Patrias",desc:"Fête nationale 28–29 juillet — défilés, feux d'artifice, fête dans tout le pays."}],
+  budget:[{label:"Auberge dortoir",amount:"8–12€/nuit"},{label:"Guesthouse privée",amount:"15–25€/nuit"},{label:"Menu marché",amount:"2–3€"},{label:"Bus nuit inter-villes",amount:"15–25€"},{label:"Entrée Machu Picchu",amount:"45–50€"},{label:"💰 Budget total",amount:"35–65€/jour"}],
+  apps:[{icon:"🚌",name:"Redbus"},{icon:"🗺️",name:"Maps.me"},{icon:"💱",name:"XE Currency"},{icon:"🌐",name:"Google Translate"},{icon:"🏨",name:"Hostelworld"},{icon:"🚂",name:"PeruRail"}],
+  pros:["Machu Picchu","Gastronomie mondiale","Diversité incroyable","Bus réseau dense","Lac Titicaca unique","Lignes de Nazca"],
+  scams:"🔴 Taxis Lima : utilise InDriver ou Uber — les taxis de rue peuvent être dangereux. 🔴 Billets Machu Picchu : UNIQUEMENT sur machupicchu.gob.pe. 🔴 Cambistas (changeurs de rue) : faux billets garantis. 🔴 Altitude : acclimate-toi 2 jours à Cusco avant de faire des efforts.",
+  phrases:[{local:"Hola / Rimaykullayki",fr:"Bonjour (esp/quechua)"},{local:"Gracias",fr:"Merci"},{local:"¿Cuánto cuesta?",fr:"Combien ?"},{local:"No gracias",fr:"Non merci"},{local:"¡Salud!",fr:"Santé !"}]
+},
+{
+  id:"inde",name:"Inde",country:"Inde",continent:"asie",
+  tag:"Le Sous-Continent des Merveilles",region:"Asie du Sud",
+  vibe:["culture","aventure","nature","city"],
+  budgetMin:20,budgetMax:70,
+  duree:["deuxsemaines","mois"],
+  compagnie:["solo","couple","amis"],
+  saison:["hiver","printemps","automne"],
+  heroImg:"https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~8–9h"},{icon:"🌡️",label:"Température",value:"15–42°C selon région"},{icon:"💱",label:"Monnaie",value:"Roupie INR"},{icon:"🛂",label:"Visa",value:"E-visa 25$/30j"},{icon:"📶",label:"Connexion",value:"Très bonne"},{icon:"🏥",label:"Vaccins",value:"Hépatites A/B, Typhoïde"}],
+  histoire:"L'Inde est l'une des plus vieilles civilisations du monde (civilisation de l'Indus, 3000 av. J-C.). Berceau du bouddhisme, de l'hindouisme et du jaïnisme. Domination moghole (1526–1857) puis britannique (1858–1947). Gandhi et la non-violence mènent à l'indépendance en 1947. La partition avec le Pakistan provoque l'un des plus grands exodes humains de l'Histoire. Aujourd'hui 1.4 milliard d'habitants, 22 langues officielles, la plus grande démocratie du monde.",
+  activites:[
+    {emoji:"🕌",name:"Taj Mahal à l'aube (Agra)",price:"15€ entrée étrangers",desc:"Le mausolée de marbre blanc construit par Shah Jahan pour son épouse décédée (1631). Arriver à l'ouverture (6h) avant la foule.",tip:"Achète le billet en ligne la veille sur asi.payumoney.com"},
+    {emoji:"🎨",name:"Festival Holi (mars)",price:"Gratuit",desc:"La fête des couleurs — des millions de personnes se projettent des poudres colorées dans tout le pays. Mathura et Vrindavan sont les plus festifs.",tip:"Porte des vêtements que tu peux jeter et protège ton appareil photo"},
+    {emoji:"🛶",name:"Backwaters du Kerala en house-boat",price:"40–80€/nuit",desc:"Navigation dans le réseau de lagunes et canaux du Kerala sur des bateaux traditionnels (kettuvallam). Rizières, cocotiers, poissons.",tip:"Réserve en basse saison (juin–août) pour des prix 50% moins chers"},
+    {emoji:"🏜️",name:"Désert du Rajasthan (Jaisalmer)",price:"20–40€ safari chameau",desc:"Safari en chameau dans les dunes de Thar, nuit sous les étoiles en bivouac, forteresse de grès dorée de Jaisalmer.",tip:"Négocie directement avec les guides à la sortie de la gare — pas par les hôtels"},
+    {emoji:"🧘",name:"Retraite yoga et méditation (Rishikesh)",price:"15–40€/jour tout compris",desc:"Rishikesh est la capitale mondiale du yoga. Des ashrams proposent des retraites de 7–28 jours avec cours, hébergement et repas.",tip:"Parshavnath Ashram pour une retraite authentique et pas chère"}
+  ],
+  why:"L'Inde est un choc sensoriel absolu — couleurs, odeurs, sons, foule, spiritualité. Un voyage qui transforme. Le moins cher d'Asie pour les backpackers avec un des réseaux de trains les plus denses du monde.",
+  food:"Mange végétarien pour le moins cher et le plus sûr. Thali (plateau complet) dans les dhabas (gargotes routières) : 1.50–3€. Masala chai : 0.20€. Street food : samosa 0.20€, chaat 0.50€. Évite les restaurants climatisés touristiques — va là où les camionneurs mangent.",
+  foodTags:["Thali 1.50€","Masala Chai 0.20€","Samosa 0.20€","Biryani","Dal Makhani","Butter Chicken","Lassi"],
+  sleep:"Dortoirs dans les grandes villes à partir de 4–7€. Guesthouses familiales : chambre privée 8–15€. Palais d'hôtes au Rajasthan (haveli) : 20–35€ pour quelque chose d'exceptionnel.",
+  transport:[{icon:"🚂",mode:"Train indien (IRCTC)",desc:"LE transport du backpacker. Réseau ultra dense, prix défiants toute concurrence. Mumbai→Delhi 10€ en sleeper class (nuit).",platform:"IRCTC.co.in · 12Go.asia"},{icon:"🚌",mode:"Bus état ou privé",desc:"Pour les zones non couvertes par le train. Sleeper buses confortables dans le Rajasthan.",platform:"RedBus.in"},{icon:"🛺",mode:"Tuk-tuk / Auto",desc:"Transport intra-urbain. Négocie le prix ou insiste pour le compteur.",platform:"Rapido · Ola"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→INR",val:"✅ Top"},{label:"Retrait DAB",sub:"SBI et HDFC Bank partout. Max 10 000 INR par retrait.",val:"~1.50€ frais"},{label:"Cash",sub:"INDISPENSABLE partout — Inde très cash",val:"Toujours avoir"},{label:"UPI",sub:"Système de paiement local instantané — demande à ton hôtel comment ça marche",val:"✅ Pratique"}],
+  events:[{saisons:["printemps"],date:"Mars",name:"Holi — Fête des couleurs",desc:"Poudres colorées, danse et musique dans tout le pays. Mathura et Vrindavan sont les plus festifs. Ambiance unique au monde."},{saisons:["automne"],date:"Oct–Nov",name:"Diwali — Fête des lumières",desc:"Millions de bougies et feux d'artifice toute la nuit. La plus grande fête hindoue — Varanasi est magique à Diwali."},{saisons:["hiver"],date:"Janvier",name:"Pushkar Camel Fair",desc:"Le plus grand marché de chameaux du monde dans le désert du Rajasthan — 50 000 chameaux, festival, compétitions."}],
+  budget:[{label:"Dortoir / guesthouse",amount:"4–12€/nuit"},{label:"Haveli (palais) Rajasthan",amount:"20–35€/nuit"},{label:"Dhaba (repas local)",amount:"1.50–3€"},{label:"Train sleeper class",amount:"5–12€ longue distance"},{label:"Tuk-tuk course",amount:"0.50–2€"},{label:"💰 Budget total",amount:"20–40€/jour"}],
+  apps:[{icon:"🚂",name:"IRCTC Rail Connect"},{icon:"🚗",name:"Ola / Rapido"},{icon:"🗺️",name:"Maps.me"},{icon:"💱",name:"XE Currency"},{icon:"🌐",name:"Google Translate"},{icon:"🏨",name:"Hostelworld"}],
+  pros:["Budget le plus bas d'Asie","Réseau de trains dense","Cuisine végétarienne","Diversité infinie","Taj Mahal","Spiritualité profonde"],
+  scams:"🔴 'Le Taj Mahal est fermé aujourd'hui' — arnaque classique pour te rediriger vers une boutique. Il est toujours ouvert sauf le vendredi. 🔴 Tuk-tuk qui t'emmène dans des boutiques d'amis. 🔴 'Billet de train gratuit pour étudiants' — n'existe pas. 🔴 Eau du robinet : toujours boire en bouteille ou avec filtre.",
+  phrases:[{local:"Namaste",fr:"Bonjour"},{local:"Dhanyavaad",fr:"Merci"},{local:"Kitna hai?",fr:"Combien ?"},{local:"Nahi chahiye",fr:"Je n'en veux pas"},{local:"Bahut accha!",fr:"Très bien !"}]
+},
+{
+  id:"nepal",name:"Népal",country:"Népal",continent:"asie",
+  tag:"Le Toit du Monde",region:"Himalaya",
+  vibe:["montagne","aventure","culture","nature"],
+  budgetMin:25,budgetMax:80,
+  duree:["deuxsemaines","mois"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","automne"],
+  heroImg:"https://images.unsplash.com/photo-1605649461751-41fd95f3f2e7?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~10–12h"},{icon:"🌡️",label:"Température",value:"0–28°C selon altitude"},{icon:"💱",label:"Monnaie",value:"Roupie NPR"},{icon:"🛂",label:"Visa",value:"On arrival 30$/15j"},{icon:"📶",label:"Connexion",value:"Bonne villes"},{icon:"🏥",label:"Vaccins",value:"Hépatites, Typhoïde"}],
+  histoire:"Le Népal est le seul pays au monde à n'avoir jamais été colonisé. Berceau du Bouddha (né à Lumbini vers 563 av. J-C.), le pays était une monarchie hindoue jusqu'en 2008 — il est devenu une république fédérale après 10 ans de guerre civile maoïste. Abrité derrière l'Himalaya, le Népal a préservé une culture bouddhiste et hindoue d'une richesse unique. Le séisme de 2015 (8900 morts) a détruit une partie du patrimoine historique.",
+  activites:[
+    {emoji:"🏔️",name:"Trek Annapurna Circuit (14–21j)",price:"30€ permit + 8€/j teahouse",desc:"L'un des plus beaux treks au monde. Traverse des villages sherpas, forêts de rhododendrons, col du Thorong La (5416m). Autonome sans guide obligatoire.",tip:"Octobre–novembre : la meilleure période, rhododendrons en avril"},
+    {emoji:"🏔️",name:"Trek Everest Base Camp (14j)",price:"50€ permits + 10–15€/j",desc:"Le trek mythique jusqu'au camp de base de l'Everest à 5364m. Namche Bazaar, monastère de Tengboche, vue sur les 8000m.",tip:"Prévois 2–3 jours d'acclimatation à Namche — le mal des montagnes est réel"},
+    {emoji:"🦅",name:"Parapente à Pokhara",price:"80–110€",desc:"Vol parapente au-dessus du lac Phewa avec vue sur l'Annapurna. L'un des meilleurs spots de parapente au monde.",tip:"Sunrise Paragliding : la meilleure école, vols à l'aube"},
+    {emoji:"🛕",name:"Boudhanath & Swayambhunath (Katmandou)",price:"3–5€ entrée",desc:"Boudhanath est le plus grand stupa du monde. Swayambhunath (temple des singes) domine la vallée. Moines en robe safran, beurre de yak brûlant.",tip:"Viens à l'aube pour les prières des moines — ambiance spirituelle unique"},
+    {emoji:"🌿",name:"Safari dans le parc de Chitwan",price:"30–60€/jour",desc:"Rhinocéros, éléphants sauvages, tigres du Bengale, crocodiles dans la jungle du Teraï. Jungle walk avec guide local.",tip:"Logement dans le village de Sauraha hors du parc — 50% moins cher"}
+  ],
+  why:"Pour les amoureux de montagne et d'aventure pure, le Népal n'a pas d'égal. Culture bouddhiste profonde, prix extrêmement bas, et les plus hauts sommets du monde comme décor quotidien.",
+  food:"Dal Bhat (lentilles + riz + légumes) est le repas du trekker — 2 fois par jour pour 3–4€ dans les teahouses. Momos (raviolis vapeur) : 2–3€. Thé au lait chaud (chai) à chaque halte. Dans les teahouses en haute altitude, les menus proposent aussi pizzas et omelettes.",
+  foodTags:["Dal Bhat 3€","Momos","Thukpa","Sel Roti","Samosa","Chai chaud","Tongba (bière chaude)"],
+  sleep:"Teahouses sur les treks : 5–8€/nuit (souvent gratuit si tu manges là-bas). Auberges à Katmandou : 6–12€. Guesthouses à Pokhara : 8–15€.",
+  transport:[{icon:"✈️",mode:"Vols intérieurs",desc:"Katmandou→Pokhara 50–70€ (25 min) ou bus 5–6h (5€). Pour Lukla (Everest) : vol obligatoire 150–180€ aller.",platform:"Buddha Air · Yeti Airlines"},{icon:"🚌",mode:"Bus public / tourist bus",desc:"Katmandou→Pokhara : bus local 5€ (6h) ou tourist bus 8€ (5h). Confort basique.",platform:"Sur place ou Greenline"},{icon:"🚕",mode:"Taxi",desc:"Négocier le prix à Katmandou. Sinon Pathao (équivalent Uber) disponible.",platform:"App Pathao"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→NPR",val:"✅ Top"},{label:"Retrait DAB",sub:"Standard Chartered Bank — peu de frais. Pas de DAB sur les treks.",val:"Retirer avant"},{label:"Cash NPR",sub:"INDISPENSABLE sur les treks — aucun DAB",val:"Prévoir du cash"},{label:"Dollar US",sub:"Accepté pour payer les permits et hôtels",val:"🟡 Utile"}],
+  events:[{saisons:["automne"],date:"Oct–Nov",name:"Dashain & Tihar",desc:"Les deux plus grandes fêtes hindoues. Dashain : sacrifices et réunions familiales. Tihar : fête des lumières, diwali népalais."},{saisons:["printemps"],date:"Avril–Mai",name:"Rhododendrons en fleurs",desc:"Les forêts d'altitude explosent de rouge et rose — la plus belle période pour les treks de l'Annapurna."},{saisons:["printemps"],date:"Avril",name:"Losar — Nouvel An tibétain",desc:"Célébré dans les communautés bouddhistes de Boudhanath — danses en masques, prières, drapeaux de prière."}],
+  budget:[{label:"Teahouse sur trek",amount:"5–8€/nuit"},{label:"Hostel Katmandou",amount:"6–12€/nuit"},{label:"Dal Bhat (repas)",amount:"3–4€"},{label:"Permit Annapurna",amount:"30€"},{label:"Guide (optionnel)",amount:"25–30€/jour"},{label:"💰 Budget total",amount:"30–55€/jour"}],
+  apps:[{icon:"🗺️",name:"Maps.me"},{icon:"⛰️",name:"ViewRanger"},{icon:"💱",name:"XE Currency"},{icon:"🌐",name:"Google Translate"},{icon:"🚗",name:"Pathao"},{icon:"🏨",name:"Hostelworld"}],
+  pros:["Everest & Annapurna","Prix ultra bas","Culture bouddhiste unique","Treks accessibles sans guide","Gens extraordinaires","Parapente de classe mondiale"],
+  scams:"🔴 Faux agents de trek à Thamel (quartier touristique de Katmandou) — des agences vendent des permits faux. Achète tes permits directement au bureau officiel (TIMS). 🔴 Chauffeurs de taxi qui 'ne connaissent pas' ton hôtel mais en connaissent un autre (avec commission).",
+  phrases:[{local:"Namaste",fr:"Bonjour / Respect"},{local:"Dhanyabad",fr:"Merci"},{local:"Kati ho?",fr:"Combien ?"},{local:"Parchaina",fr:"Je n'en veux pas"},{local:"Ramro chha",fr:"C'est bien !"}]
+},
+{
+  id:"mexique",name:"Mexique",country:"Mexique",continent:"amerique",
+  tag:"La Civilisation du Soleil",region:"Amérique Centrale",
+  vibe:["culture","plage","aventure","city"],
+  budgetMin:30,budgetMax:85,
+  duree:["semaine","deuxsemaines","mois"],
+  compagnie:["solo","couple","amis"],
+  saison:["hiver","printemps","automne"],
+  heroImg:"https://images.unsplash.com/photo-1518638150340-f706e86654de?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~11–13h"},{icon:"🌡️",label:"Température",value:"18–35°C"},{icon:"💱",label:"Monnaie",value:"Peso MXN"},{icon:"🛂",label:"Visa",value:"Gratuit 180j"},{icon:"📶",label:"Connexion",value:"Très bonne"},{icon:"🏥",label:"Vaccins",value:"Hépatite A conseillée"}],
+  histoire:"Le Mexique est l'héritier de trois grandes civilisations : les Olmèques (1500 av. J-C.), les Mayas (brillants mathématiciens et astronomes) et les Aztèques qui fondèrent Tenochtitlan (actuelle Mexico) en 1325. Hernán Cortés conquiert l'empire aztèque avec 500 hommes en 1521 — l'une des conquêtes les plus spectaculaires de l'Histoire. Indépendance en 1821 après 11 ans de guerre. La Révolution mexicaine (1910–1920) marque profondément l'identité nationale.",
+  activites:[
+    {emoji:"🏛️",name:"Ruines de Teotihuacán",price:"4€",desc:"La cité des dieux, à 50km de Mexico : pyramides du Soleil et de la Lune. Grimpe jusqu'au sommet pour une vue à 360° sur la vallée.",tip:"Y aller le matin à l'ouverture (8h) avant la chaleur et la foule"},
+    {emoji:"🤿",name:"Cenotes du Yucatán",price:"5–15€ entrée",desc:"Puits naturels d'eau douce souterraine dans la jungle. Snorkeling avec stalactites sous l'eau. Cenote Ik Kil, Dos Ojos, Gran Cenote.",tip:"Loue un scooter pour accéder aux cenotes moins touristiques hors des routes principales"},
+    {emoji:"💀",name:"Jour des Morts à Oaxaca (2 Nov)",price:"Gratuit",desc:"La plus grande célébration du Día de los Muertos. Processions dans les cimetières décorés, ofrendas, musique, déguisements.",tip:"Réserve ton logement 4–6 mois à l'avance — Oaxaca est complet"},
+    {emoji:"🏄",name:"Surf à Puerto Escondido",price:"20–35€/cours",desc:"Zicatela est l'une des meilleures vagues de tube au monde. Puerto Escondido est décontracté, pas cher et authentique.",tip:"Niveau intermédiaire minimum pour Zicatela — les débutants vont à La Punta"},
+    {emoji:"🎨",name:"Quartier Roma & Condesa de Mexico City",price:"Gratuit",desc:"Les quartiers les plus hipster de Mexico : street art, marchés vintage, meilleurs tacos de la ville, musées gratuits le dimanche.",tip:"Musée d'Anthropologie (le meilleur d'Amérique Latine) : gratuit le dimanche"}
+  ],
+  why:"Le Mexique offre tout en un : ruines mayas et aztèques, plages des Caraïbes, jungle, désert, gastronomie classée au patrimoine UNESCO, vie nocturne et culture vivante.",
+  food:"Tacos de rue : 3 pour 1–2€. Tlayudas à Oaxaca : 2–3€. Marché couvert : menu complet avec soupe 3–4€. Agua fresca (eau infusée fruits) : 0.50€. Mezcal local dans les bars d'Oaxaca : 2€ le verre. N'achète jamais de tacos dans les restaurants — uniquement aux stands de rue.",
+  foodTags:["Tacos 3 pour 1€","Tlayuda","Mole","Pozole","Elote","Agua Fresca","Mezcal 2€"],
+  sleep:"Auberges à Mexico, Oaxaca, Mérida : 8–14€ (Selina, communauté de voyageurs). Guesthouses familiales dans les villages : 12–20€. Playa del Carmen et Tulum plus chers (15–25€ dortoir).",
+  transport:[{icon:"🚌",mode:"ADO (bus premium)",desc:"Le réseau de bus le plus fiable du Mexique. Mexico→Oaxaca 15–20€ (6h). Ponctuel et climatisé.",platform:"ADO.com.mx"},{icon:"🚐",mode:"Colectivos",desc:"Minibus partagés entre villes. 2–4x moins cher que l'ADO, plus lents mais authentiques.",platform:"Sur place"},{icon:"✈️",mode:"Vols intérieurs",desc:"VivaAerobus et Interjet : Mexico→Oaxaca à partir de 20€ réservé à l'avance.",platform:"VivaAerobus.com · Skyscanner"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→MXN",val:"✅ Top"},{label:"Retrait DAB",sub:"BBVA et Banamex partout. Max 5000 pesos.",val:"~2€ frais"},{label:"Cash",sub:"Indispensable dans les marchés, taqueries et transports",val:"Toujours avoir"},{label:"Carte",sub:"Acceptée dans les restaurants touristiques et supermarchés",val:"✅ OK villes"}],
+  events:[{saisons:["automne"],date:"1–2 Novembre",name:"Día de los Muertos",desc:"Oaxaca et Pátzcuaro sont les plus spectaculaires. Cimetières décorés, ofrendas, musique. Une expérience unique au monde."},{saisons:["hiver"],date:"Décembre",name:"Posadas",desc:"9 jours de processions et fêtes traditionnelles avant Noël dans tous les villages."},{saisons:["printemps"],date:"Mars",name:"Carnaval de Veracruz",desc:"Le plus grand carnaval du Mexique — 5 jours de danse, musique tropicale et défilés."}],
+  budget:[{label:"Auberge dortoir",amount:"8–15€/nuit"},{label:"Guesthouse privée",amount:"18–30€/nuit"},{label:"Tacos (repas)",amount:"2–4€"},{label:"Bus ADO inter-villes",amount:"12–25€"},{label:"Cenote entrée",amount:"5–15€"},{label:"💰 Budget total",amount:"30–55€/jour"}],
+  apps:[{icon:"🚗",name:"Uber / DiDi"},{icon:"🗺️",name:"Maps.me"},{icon:"💱",name:"XE Currency"},{icon:"🚌",name:"ADO App"},{icon:"🌐",name:"Google Translate"},{icon:"🏨",name:"Hostelworld"}],
+  pros:["Gastronomie UNESCO","Ruines mayas/aztèques","Plages Caraïbes","Budget abordable","Cultura très vivante","Cenotes uniques au monde"],
+  scams:"🔴 Change dans la rue : faux billets. 🔴 Taxis 'officiels' à l'aéroport : prends Uber ou un taxi pré-payé au comptoir officiel. 🔴 Certaines zones de Mexico et Acapulco dangereuses la nuit — renseigne-toi sur les quartiers.",
+  phrases:[{local:"Hola / Buenos días",fr:"Bonjour"},{local:"Gracias",fr:"Merci"},{local:"¿Cuánto cuesta?",fr:"Combien ?"},{local:"No gracias",fr:"Non merci"},{local:"¡Provecho!",fr:"Bon appétit !"}]
+},
+{
+  id:"portugal",name:"Portugal",country:"Portugal",continent:"europe",
+  tag:"L'Art de la Douceur de Vivre",region:"Europe de l'Ouest",
+  vibe:["city","culture","plage","nature"],
+  budgetMin:35,budgetMax:90,
+  duree:["weekend","semaine","deuxsemaines"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","ete","automne"],
+  heroImg:"https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~2h20"},{icon:"🌡️",label:"Température",value:"15–35°C"},{icon:"💱",label:"Monnaie",value:"Euro €"},{icon:"🛂",label:"Visa",value:"Aucun (UE)"},{icon:"📶",label:"Connexion",value:"Excellente"},{icon:"🏥",label:"Vaccins",value:"Aucun"}],
+  histoire:"Le Portugal fut la première grande puissance maritime mondiale. Vasco de Gama atteint l'Inde en 1498, Magellan lance le premier tour du monde en 1519. Le pays contrôlait un empire de 4 continents pendant 500 ans. Le séisme de Lisbonne de 1755 (l'un des pires de l'Histoire) détruisit la ville. La dictature de Salazar (1932–1974) prit fin avec la Révolution des Oeillets — révolution pacifique, les soldats mettaient des œillets dans leurs fusils.",
+  activites:[
+    {emoji:"🚋",name:"Tram 28 à Lisbonne",price:"3€",desc:"L'iconique tramway jaune qui traverse les vieux quartiers d'Alfama, Graça et Chiado. Monte jusqu'au Miradouro da Graça pour la vue.",tip:"Monte à l'arrêt Martim Moniz à l'ouverture (6h30) pour éviter la foule"},
+    {emoji:"🏄",name:"Surf à Nazaré ou Peniche",price:"25–40€/cours",desc:"Nazaré possède les plus grandes vagues du monde (record : 30m). Peniche est le paradis des surfeurs de tous niveaux.",tip:"Peniche pour apprendre, Nazaré en hiver pour voir les géantes (pas surfer)"},
+    {emoji:"🍷",name:"Route des vins de l'Alentejo",price:"10–20€ dégustation",desc:"La région viticole la plus étendue du Portugal — vastes plaines dorées, vins robustes, huile d'olive et liège. Évora comme base.",tip:"Loue un vélo à Évora pour rejoindre les domaines viticoles autour"},
+    {emoji:"🏰",name:"Sintra et ses palais",price:"10–15€/palais",desc:"Ville classée UNESCO à 30min de Lisbonne : palais de la Pena (coloré, perché dans les nuages), forêt de Sintra, château des Maures.",tip:"Viens en semaine et le matin — le week-end c'est bondé"},
+    {emoji:"🎵",name:"Concert de Fado à Alfama",price:"Gratuit–25€",desc:"Le Fado est la musique de l'âme portugaise — mélancolie, nostalgie, saudade. Les petites tascos d'Alfama offrent des concerts spontanés.",tip:"O Senhor Vinho ou Tasca do Chico pour l'authenticité — réserve à l'avance"}
+  ],
+  why:"Le Portugal est la meilleure destination backpacker d'Europe occidentale : encore abordable, superbe patrimoine, plages atlantiques, cuisine délicieuse et gens d'une gentillesse rare.",
+  food:"Pastel de nata (petit flan) : 1.20€ chez Pastéis de Belém. Bacalhau (morue) : 300 recettes différentes. Menu du jour dans les tascos : soupe + plat + vin + dessert pour 8–10€. Bifanas (sandwich au porc) : 2–3€. Ginja (liqueur de cerise) : 1€ le verre debout.",
+  foodTags:["Pastel de Nata 1.20€","Bacalhau","Bifana 2€","Francesinha","Caldo Verde","Ginja 1€","Vinho Verde"],
+  sleep:"Lisbonne et Porto ont d'excellents hostels à 15–22€ (Lisbon Destination, Gallery Hostel Porto). Dans l'Alentejo et l'Algarve, pensions et guesthouses familiales 25–40€.",
+  transport:[{icon:"🚂",mode:"Train CP (Comboios de Portugal)",desc:"Lisbonne→Porto 2h, à partir de 15€. Lisbonne→Faro (Algarve) 20€. Réserve tôt.",platform:"CP.pt"},{icon:"🚌",mode:"Rede Expressos",desc:"Bus inter-villes confortables. Couvre toutes les villes moyennes non accessibles en train.",platform:"Rede-expressos.pt"},{icon:"🛴",mode:"Trottinette / vélo",desc:"Lisbonne et Porto ont des flottes de trottinettes et vélos électriques partout.",platform:"Bolt · Lime"}],
+  money:[{label:"Carte (partout)",sub:"Portugal accepte la carte partout, même les marchés",val:"✅ Idéal"},{label:"Revolut",sub:"Pour les DAB sans frais si besoin de cash",val:"✅ Top"},{label:"Cash",sub:"Utile pour les marchés de campagne et tascas traditionnelles",val:"Garder un peu"},{label:"Tip",sub:"Non obligatoire — 5–10% dans les restaurants si satisfait",val:"🟡 Optionnel"}],
+  events:[{saisons:["ete"],date:"12–13 Juin",name:"Fête de Saint-Antoine (Lisbonne)",desc:"Toute Lisbonne fête dans la rue. Grillades de sardines dans chaque ruelle d'Alfama, musique, danse. Entrée gratuite partout."},{saisons:["ete"],date:"Juillet–Août",name:"Festival NOS Alive (Lisbonne)",desc:"L'un des meilleurs festivals d'Europe — Radiohead, The Cure, Billie Eilish... Sur les rives du Tage."},{saisons:["automne"],date:"Septembre",name:"Festival du Fado (Lisbonne)",desc:"Concert de fado dans tous les quartiers historiques — gratuits pour beaucoup."}],
+  budget:[{label:"Auberge dortoir",amount:"15–22€/nuit"},{label:"Pension / guesthouse",amount:"35–60€/nuit"},{label:"Menu du jour tasco",amount:"8–10€"},{label:"Pastel de nata",amount:"1.20€"},{label:"Train inter-villes",amount:"12–20€"},{label:"💰 Budget total",amount:"40–70€/jour"}],
+  apps:[{icon:"🚂",name:"CP.pt"},{icon:"🛴",name:"Bolt / Lime"},{icon:"🗺️",name:"Google Maps"},{icon:"🏨",name:"Hostelworld"},{icon:"🎵",name:"Fado en Lisbonne"},{icon:"🚌",name:"Rede Expressos"}],
+  pros:["2h20 de Paris","Encore abordable","Plages atlantiques","Cuisine délicieuse","Sécurité totale","Gens d'une gentillesse rare"],
+  scams:"Le Portugal est extrêmement sûr. 🟡 Tram 28 : attention aux pickpockets dans la foule — garde ton sac devant toi. 🟡 Restaurants autour de la Praça do Comércio à Lisbonne : prix touristiques gonflés, cherche 2 ruelles en retrait.",
+  phrases:[{local:"Olá / Bom dia",fr:"Bonjour"},{local:"Obrigado(a)",fr:"Merci"},{local:"Quanto custa?",fr:"Combien ?"},{local:"Não obrigado",fr:"Non merci"},{local:"Saúde!",fr:"Santé !"}]
+},
+{
+  id:"tanzanie",name:"Tanzanie",country:"Tanzanie",continent:"afrique",
+  tag:"Le Safari des Rêves",region:"Afrique de l'Est",
+  vibe:["nature","aventure","culture","plage"],
+  budgetMin:45,budgetMax:120,
+  duree:["deuxsemaines","mois"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","hiver","automne"],
+  heroImg:"https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~9h"},{icon:"🌡️",label:"Température",value:"20–35°C"},{icon:"💱",label:"Monnaie",value:"Shilling TZS"},{icon:"🛂",label:"Visa",value:"E-visa 50$"},{icon:"📶",label:"Connexion",value:"Moyenne"},{icon:"🏥",label:"Vaccins",value:"Fièvre jaune + paludisme"}],
+  histoire:"La Tanzanie est le berceau de l'humanité — Olduvai Gorge a livré les premiers ossements d'Homo Habilis (1.8 millions d'années). La culture swahilie (fusion africaine-arabe-indienne) naît du commerce maritime médiéval. Zanzibar fut le centre de l'empire omanais et du commerce des esclaves en Afrique de l'Est jusqu'en 1873. Julius Nyerere, 'père de la nation', indépendant en 1961, tenta un socialisme africain unique appelé l'Ujamaa.",
+  activites:[
+    {emoji:"🦁",name:"Safari Serengeti",price:"80–150€/jour (partagé)",desc:"La grande migration : 2 millions de gnous traversent la rivière Mara entre juillet et octobre. Lions, éléphants, guépards. Réserve un safari partagé depuis Arusha.",tip:"Safari partagé en groupe de 6 : 50% moins cher que le privé — même expérience"},
+    {emoji:"🏔️",name:"Escalade du Kilimandjaro",price:"1500–2500€ tout compris",desc:"Le plus haut sommet d'Afrique (5895m). 7–8 jours d'ascension avec guide et porteurs obligatoires. Route Marangu (plus facile) ou Machame (plus belle).",tip:"Réserve avec une agence d'Arusha directement — 30% moins cher qu'en Europe"},
+    {emoji:"🐬",name:"Plages et snorkeling de Zanzibar",price:"15–30€ excursion bateau",desc:"Stone Town classée UNESCO, plages de Nungwi et Paje, snorkeling avec tortues et dauphins, Prison Island.",tip:"Loue un scooter pour rejoindre les plages moins touristiques du nord-est"},
+    {emoji:"🦒",name:"Cratère du Ngorongoro",price:"60€/j permit + safari",desc:"La plus grande caldeira habitée du monde — densité d'animaux exceptionnelle. Rhinocéros noirs, lions, zèbres dans un seul espace.",tip:"Combine en 2 jours avec le Serengeti — les agences proposent ce circuit"},
+    {emoji:"🌅",name:"Village Maasaï",price:"15–25€ visite",desc:"Les Maasaï guerriers nomades aux vêtements rouges vivent encore selon leurs traditions dans la région d'Arusha. Visite culturelle authentique.",tip:"Évite les visites organisées depuis les lodges — contacte directement les villages"}
+  ],
+  why:"La Tanzanie offre le safari le plus spectaculaire du monde, les plages de rêve de Zanzibar, et le Kilimandjaro. Difficile de trouver autant de variété dans un seul pays africain.",
+  food:"Ugali (pâte de maïs) + nyama choma (viande grillée) dans les mamalisas : 2–3€. Pilau (riz épicé) et ndizi nyama (banane plantain). À Zanzibar, le Forodhani Market : fruits de mer grillés sur la plage au coucher du soleil pour 3–5€.",
+  foodTags:["Ugali","Nyama Choma","Pilau","Ndizi Nyama","Chipsi Mayai","Zanzibar Pizza","Fruits de mer 4€"],
+  sleep:"Arusha : bons hostels pour préparer le safari (8–15€). Zanzibar : guesthouses de Stone Town 15–25€. Hors zones touristiques : guesthouses locales 8–12€.",
+  transport:[{icon:"⛵",mode:"Ferry Zanzibar",desc:"Dar es Salaam→Zanzibar : fast ferry 35–40$ (2h) ou slow ferry 10$ (4h).",platform:"Azam Marine · Coastal Fast Ferries"},{icon:"🚌",mode:"Daladala",desc:"Minibus locaux 0.30–1€. Lents mais authentiques.",platform:"Sur place"},{icon:"✈️",mode:"Vol intérieur",desc:"Arusha→Zanzibar à partir de 80$ réservé tôt.",platform:"Auric Air · Coastal Aviation"}],
+  money:[{label:"Dollar US",sub:"Accepté partout pour les prix touristiques et safaris",val:"Apporter du cash"},{label:"Revolut / Wise",sub:"Meilleur taux pour retrait",val:"✅ Top"},{label:"Retrait DAB",sub:"CRDB Bank et NMB Bank dans toutes les villes",val:"~3€ frais"},{label:"Cash local",sub:"Indispensable daladalas, marchés, villages",val:"Toujours avoir"}],
+  events:[{saisons:["hiver","automne"],date:"Juil–Oct",name:"Grande Migration du Serengeti",desc:"2 millions de gnous traversent la Mara. Le plus grand spectacle animalier sur Terre. Réserve le safari 6 mois à l'avance."},{saisons:["printemps"],date:"Février–Mars",name:"Festival Sauti za Busara (Zanzibar)",desc:"Festival de musique swahilie — taarab, bongo flava, musique de l'Océan Indien."},{saisons:["hiver"],date:"Juillet",name:"Kilimanjaro Marathon",desc:"Course internationale autour du Kili — ambiance unique avec les Maasaï le long du parcours."}],
+  budget:[{label:"Hostel / guesthouse",amount:"8–20€/nuit"},{label:"Repas local",amount:"2–4€"},{label:"Safari partagé",amount:"80–120€/jour"},{label:"Ferry Zanzibar",amount:"35–40$"},{label:"Permit Ngorongoro",amount:"60$/jour"},{label:"💰 Budget total",amount:"50–100€/jour"}],
+  apps:[{icon:"🗺️",name:"Maps.me"},{icon:"💱",name:"XE Currency"},{icon:"🌐",name:"Google Translate"},{icon:"🏨",name:"Booking.com"},{icon:"⛵",name:"Azam Marine"},{icon:"📷",name:"iNaturalist"}],
+  pros:["Safari unique au monde","Zanzibar paradisiaque","Kilimandjaro accessible","Culture swahilie","Grande Migration","Gens extraordinaires"],
+  scams:"🔴 Agences safari à Arusha : évite les prix sous 80$/j — qualité zéro. Passe par TripAdvisor pour trouver des agences recommandées. 🔴 Taxis à Dar es Salaam : négocie avant de monter. 🔴 Échangeurs aéroport : taux catastrophiques.",
+  phrases:[{local:"Habari / Jambo",fr:"Bonjour"},{local:"Asante",fr:"Merci"},{local:"Bei gani?",fr:"Combien ?"},{local:"Hapana asante",fr:"Non merci"},{local:"Karibu!",fr:"Bienvenue !"}]
+},
+{
+  id:"colombie",name:"Colombie",country:"Colombie",continent:"amerique",
+  tag:"Le Pays de la Créativité",region:"Amérique du Sud",
+  vibe:["city","culture","nature","plage"],
+  budgetMin:28,budgetMax:75,
+  duree:["semaine","deuxsemaines","mois"],
+  compagnie:["solo","couple","amis"],
+  saison:["hiver","printemps","automne"],
+  heroImg:"https://images.unsplash.com/photo-1534885320675-b08aa131cc5e?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~11h"},{icon:"🌡️",label:"Température",value:"18–32°C"},{icon:"💱",label:"Monnaie",value:"Peso COP"},{icon:"🛂",label:"Visa",value:"Gratuit 90j"},{icon:"📶",label:"Connexion",value:"Très bonne"},{icon:"🏥",label:"Vaccins",value:"Fièvre jaune conseillée"}],
+  histoire:"La Colombie précolombienne était habitée par des civilisations sophistiquées dont les Muiscas, créateurs de la légende El Dorado (le roi doré). Conquête espagnole au 16ème siècle, indépendance en 1810 sous Simón Bolívar. Le 20ème siècle est marqué par La Violencia (guerre civile 1948–1958) et 50 ans de conflit avec les FARC, terminé par l'accord de paix de 2016. La Colombie d'aujourd'hui est méconnaissable : pays touristique, sûr dans les zones fréquentées, et électrisant.",
+  activites:[
+    {emoji:"🌸",name:"Vallée de Cocora et palmiers de cire",price:"Bus 3€ + mule 8€",desc:"Les palmiers de cire (les plus hauts du monde, 60m) dans les montagnes de la Zona Cafetera près de Salento. Randonnée 4–6h.",tip:"Pars très tôt le matin — les nuages dissipent la vue l'après-midi"},
+    {emoji:"🏖️",name:"Parc Tayrona (Côte Caraïbe)",price:"15€ entrée",desc:"Jungle dense qui plonge dans la mer des Caraïbes. Plages sauvages, snorkeling, hamacs. Accès à pied ou en bateau.",tip:"Apporte de la nourriture — les boutiques dans le parc sont chères"},
+    {emoji:"🏘️",name:"Cartagena — Ville coloniale",price:"Gratuit à se balader",desc:"La ville coloniale la plus préservée d'Amérique Latine. Murs colorés, balcons fleuris, Place de Bolivar. Classée UNESCO.",tip:"Sors des murs la nuit pour manger : Getsemaní, moins cher et plus authentique"},
+    {emoji:"🎺",name:"Fête de Barranquilla (Carnaval)",price:"Gratuit–30€ tribune",desc:"Le deuxième plus grand carnaval du monde après Rio. 4 jours de cumbia, vallenato, défilés. En février.",tip:"Réserve ton hébergement 6 mois à l'avance pour le carnaval"},
+    {emoji:"🚡",name:"Métro cable de Medellín",price:"1€",desc:"Le téléphérique urbain qui relie les quartiers populaires des collines au métro. Vue époustouflante sur la ville. Visite du quartier Comuna 13 (street art).",tip:"Prends un guide local pour la visite de Comuna 13 — les associations locales sont excellentes"}
+  ],
+  why:"La Colombie est la grande surprise de l'Amérique du Sud. Medellin réhabilitée et innovante, Cartagena coloniale, Tayrona paradisiaque, Salento et ses montagnes vertes. Les Colombiens sont parmi les plus chaleureux du continent.",
+  food:"Bandeja paisa (l'assiette nationale — haricots, riz, viande, chicharrón, plantain, œuf) : 4–6€. Arepas (galettes de maïs) : 0.50€. Menu du jour dans les 'corrientazos' (restaurants populaires) : 3–4€ avec soupe + plat + boisson.",
+  foodTags:["Bandeja Paisa 4€","Arepa 0.50€","Empanada","Sancocho","Buñuelo","Aguardiente","Tinto (café)"],
+  sleep:"Auberges à Medellín (El Poblado) et Cartagena : 10–16€ (Black Sheep, Selina). À Salento : guesthouses dans les fincas caféières : 12–20€.",
+  transport:[{icon:"🚌",mode:"Bus inter-villes",desc:"Réseau dense et abordable. Medellín→Cartagena 15–20€ (12h nuit). Salento→Medellín 8€.",platform:"Redbus.com.co"},{icon:"✈️",mode:"Vols intérieurs",desc:"Avianca et VivaAir : Bogotá→Medellín à partir de 15€. Rapide et abordable.",platform:"Skyscanner · Avianca.com"},{icon:"🚗",mode:"Uber / inDriver",desc:"Fonctionne bien dans les grandes villes. Officieusement car réglementation floue.",platform:"Uber · inDriver"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→COP",val:"✅ Top"},{label:"Retrait DAB",sub:"Bancolombia et Davivienda partout",val:"~2€ frais"},{label:"Cash",sub:"Utile dans les marchés et petites villes",val:"Garder du cash"},{label:"Carte",sub:"Acceptée dans les restaurants et commerces des grandes villes",val:"✅ OK"}],
+  events:[{saisons:["hiver"],date:"Février",name:"Carnaval de Barranquilla",desc:"2ème plus grand carnaval du monde. 4 jours de cumbia, vallenato, costumes. Classé UNESCO."},{saisons:["hiver"],date:"Décembre",name:"Alumbrado de Medellín",desc:"Medellín s'illumine de millions de lumières le long de la rivière Medellín. Gratuit et spectaculaire."},{saisons:["printemps"],date:"Avril–Mai",name:"Feria de las Flores (Medellín)",desc:"La plus belle fête de fleurs du monde — défilé de fleurs sur des chars, silleteros (porteurs de fleurs), musique."}],
+  budget:[{label:"Auberge dortoir",amount:"10–16€/nuit"},{label:"Guesthouse privée",amount:"20–35€/nuit"},{label:"Menu corrientazo",amount:"3–4€"},{label:"Bus inter-villes",amount:"8–20€"},{label:"Vol intérieur",amount:"15–30€"},{label:"💰 Budget total",amount:"30–55€/jour"}],
+  apps:[{icon:"🚗",name:"Uber / inDriver"},{icon:"🗺️",name:"Maps.me"},{icon:"💱",name:"XE Currency"},{icon:"🚌",name:"Redbus Colombia"},{icon:"🌐",name:"Google Translate"},{icon:"🏨",name:"Hostelworld"}],
+  pros:["Gens incroyablement chaleureux","Paysages variés","Prix abordables","Cartagena coloniale","Gastronomie","Transformation de Medellín"],
+  scams:"🔴 Scopolamine (drogue) : méfie-toi des inconnus qui offrent des cigarettes ou boissons en boîte de nuit. 🔴 Change dans la rue : faux billets. 🔴 Certains quartiers à éviter la nuit — renseigne-toi auprès de ton hostel.",
+  phrases:[{local:"Hola / Buenos días",fr:"Bonjour"},{local:"Gracias",fr:"Merci"},{local:"¿Cuánto vale?",fr:"Combien ça vaut ?"},{local:"No gracias",fr:"Non merci"},{local:"¡Parcero!",fr:"Mon ami ! (argot)"}]
+},
+{
+  id:"bali",name:"Bali",country:"Indonésie",continent:"asie",
+  tag:"L'Île des Dieux",region:"Asie du Sud-Est",
+  vibe:["plage","nature","culture","aventure"],
+  budgetMin:28,budgetMax:95,
+  duree:["semaine","deuxsemaines","mois"],
+  compagnie:["solo","couple","amis"],
+  saison:["printemps","ete","automne","hiver"],
+  heroImg:"https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1400&q=80",
+  infos:[{icon:"✈️",label:"Vol Paris",value:"~14h"},{icon:"🌡️",label:"Température",value:"25–33°C"},{icon:"💱",label:"Monnaie",value:"Roupie IDR"},{icon:"🛂",label:"Visa",value:"Visa on arrival 35$"},{icon:"📶",label:"Connexion",value:"Bonne"},{icon:"🏥",label:"Vaccins",value:"Hépatites A/B, Rage si rando"}],
+  histoire:"Bali est la seule île majoritairement hindoue d'Indonésie (nation à 87% musulmane) — ce qui explique sa culture unique. Bali fut le dernier refuge des intellectuels et artistes javanais après l'islamisation de Java au 16ème siècle. Colonisée par les Hollandais en 1908 après la résistance héroïque de Puputan (où les rois balinais choisirent de mourir plutôt que de se rendre). Cette histoire a créé une fierté culturelle exceptionnelle.",
+  activites:[
+    {emoji:"🌾",name:"Rizières de Tegallalang (Ubud)",price:"Gratuit (don suggéré 1€)",desc:"Les terrasses de riz en escalier parmi les plus photographiées du monde. Lever du soleil pour les couleurs dorées et la brume.",tip:"Arrive à 6h avant les guides et vendeurs — c'est magique et silencieux"},
+    {emoji:"🌊",name:"Surf à Canggu ou Uluwatu",price:"20–35€/cours",desc:"Canggu pour les débutants/intermédiaires (vague Batu Bolong). Uluwatu pour les confirmés (vagues de tube, falaises à 80m).",tip:"Surf Schools : Odysseys Surf School à Canggu — rapport qualité/prix top"},
+    {emoji:"🛕",name:"Spectacle Kecak au coucher du soleil (Uluwatu)",price:"10€",desc:"Danse rituelle balinaise de 100 hommes chantant en chœur devant la mer au coucher du soleil depuis le temple d'Uluwatu. Unique.",tip:"Arrive 30 min avant pour avoir une bonne place — le temple ferme après"},
+    {emoji:"🏔️",name:"Ascension du Mont Batur (volcan)",price:"35–50€ avec guide",desc:"Lever du soleil depuis le sommet du volcan actif (1717m). Départ à 3h du matin, arrivée à l'aube. Vue sur le lac de caldeira.",tip:"Guide obligatoire imposé par les autorités locales — négocie en arrivant à pied au village"},
+    {emoji:"🍳",name:"Cours de cuisine balinaise",price:"25–40€",desc:"Marché local à l'aube + cours de cuisine de 4–5h + déjeuner des plats préparés. Apprends le Nasi Goreng, le satay et le lawar.",tip:"Paon Cooking Class à Ubud : rapport qualité/prix excellent, petit groupe"}
+  ],
+  why:"Bali offre tout en un : plages et surf à Canggu, spiritualité et rizières à Ubud, falaises et couchers de soleil à Uluwatu. Infrastructure backpacker parfaite.",
+  food:"Warungs (gargotes locales) : nasi goreng, mie goreng, satay pour 1.50–3€. Marchés nocturnes de Gianyar à Ubud : incontournables. Bintang (bière locale) : 1€ dans un warung, 3€ en beach club.",
+  foodTags:["Nasi Goreng 2€","Satay","Babi Guling","Lawar","Gado-Gado","Jamu","Bintang 1€"],
+  sleep:"Hostels à Canggu et Ubud 8–14€ (The Slow, Tribal). Guest houses balinaises avec piscine partagée : 18–30€. Villas avec piscine privée : 35–60€ (incroyable rapport qualité/prix).",
+  transport:[{icon:"🛵",mode:"Scooter",desc:"5–8€/jour. Indispensable pour explorer hors des zones touristiques.",platform:"Louer localement"},{icon:"🚗",mode:"Grab",desc:"Fonctionne dans le sud de Bali. Chauffeurs de taxi traditionnels peuvent être agressifs.",platform:"App Grab"},{icon:"🚐",mode:"Shuttle tourist",desc:"Bus partagés entre zones. Ubud→Canggu 5€, Ubud→Uluwatu 8€.",platform:"Perama · Kura-Kura Bus"}],
+  money:[{label:"Revolut / Wise",sub:"Meilleur taux EUR→IDR",val:"✅ Top"},{label:"Retrait DAB",sub:"BCA et Mandiri — évite les DAB en zones touristiques (frais cachés)",val:"Hors zone"},{label:"Cash",sub:"INDISPENSABLE — warungs, marchés, transports",val:"Toujours avoir"},{label:"Négocier",sub:"Dans les marchés artisanaux : commence à 50% du prix annoncé",val:"⚠️ Négocier"}],
+  events:[{saisons:["printemps"],date:"Mars (dates variables)",name:"Nyepi — Jour du Silence",desc:"Le Nouvel An balinais : toute l'île s'arrête 24h. Aéroport fermé, pas de lumière ni bruit. Expérience unique au monde."},{saisons:["toute l'année"],date:"Toute l'année",name:"Odalan — Fête de temple",desc:"Chaque temple a sa fête annuelle — processions, gamelan, offrandes. Tu en croiseras forcément une."},{saisons:["automne"],date:"Octobre",name:"Bali Arts Festival",desc:"Festival d'arts traditionnels à Denpasar — danses, sculptures, peintures balinaises."}],
+  budget:[{label:"Hostel / guest house",amount:"8–18€/nuit"},{label:"Villa avec piscine privée",amount:"35–65€/nuit"},{label:"Repas warung",amount:"1.50–3€"},{label:"Scooter/jour",amount:"5–8€"},{label:"Cours de surf",amount:"20–35€"},{label:"💰 Budget total",amount:"30–55€/jour"}],
+  apps:[{icon:"🚗",name:"Grab"},{icon:"🗺️",name:"Maps.me"},{icon:"💱",name:"XE Currency"},{icon:"🌐",name:"Google Translate"},{icon:"🏄",name:"Surfline"},{icon:"🏨",name:"Hostelworld"}],
+  pros:["Infrastructure backpacker parfaite","Prix très bas","Culture hindoue unique","Plages et surf","Rizières magiques","Scooter partout"],
+  scams:"🔴 Taxis aéroport — prends le taxi officiel ou Grab. 🔴 DAB zones touristiques (Kuta, Seminyak) : frais cachés jusqu'à 5€. 🔴 Faux policiers qui te demandent tes papiers dans la rue — la vraie police ne fait pas ça.",
+  phrases:[{local:"Selamat pagi",fr:"Bonjour (matin)"},{local:"Terima kasih",fr:"Merci"},{local:"Berapa harganya?",fr:"Combien ?"},{local:"Tidak mau",fr:"Je ne veux pas"},{local:"Enak!",fr:"C'est délicieux !"}]
+}
+];
+function score(d){
+  let s=0;
+  if(d.vibe.includes(A.vibe))s+=30;
+  if(A.continent==='tout'||d.continent===A.continent)s+=20;
+  const b=A.budget;
+  if(b>=d.budgetMin&&b<=d.budgetMax)s+=20;
+  else if(b>=d.budgetMin*0.8)s+=10;
+  if(d.duree.includes(A.duree))s+=15;
+  if(d.compagnie.includes(A.compagnie))s+=8;
+  if(d.saison.includes(A.saison))s+=7;
+  return Math.min(Math.round(s),98);
+}
+
+function best(){
+  let top=null,ts=0;
+  DB.forEach(d=>{const s=score(d);if(s>ts){ts=s;top=d;}});
+  return{dest:top,score:ts};
+}
+
+const vL={vibe:{plage:'🏖️ Plage',montagne:'⛰️ Montagne',culture:'🏛️ Culture',city:'🌆 City',aventure:'🧗 Aventure',nature:'🌿 Nature'},duree:{weekend:'3–5 jours',semaine:'1 semaine',deuxsemaines:'2 semaines',mois:'1 mois+'},compagnie:{solo:'🦅 Solo',couple:'💑 Couple',amis:'🎉 Amis'},saison:{printemps:'🌸 Printemps',ete:'☀️ Été',automne:'🍂 Automne',hiver:'❄️ Hiver'},continent:{asie:'🌏 Asie',europe:'🇪🇺 Europe',amerique:'🌎 Amériques',afrique:'🌍 Afrique',tout:'🎲 Surprise'}};
+
+function mkTag(val,cat){
+  const cols={vibe:'to',duree:'tg',compagnie:'to',saison:'tb',continent:'tg'};
+  return`<span class="tag ${cols[cat]||'to'}" style="margin:3px">${vL[cat][val]||val}</span>`;
+}
+
+function updRecap(){
+  const items=[
+    A.vibe&&mkTag(A.vibe,'vibe'),
+    A.budget&&`<span class="tag tb" style="margin:3px">💰 ${A.budget}€/j</span>`,
+    A.duree&&mkTag(A.duree,'duree'),
+    A.compagnie&&mkTag(A.compagnie,'compagnie'),
+    A.saison&&mkTag(A.saison,'saison'),
+    A.continent&&mkTag(A.continent,'continent')
+  ].filter(Boolean);
+  document.getElementById('recap').innerHTML=`<p style="font-size:0.75rem;color:rgba(26,26,46,0.45);margin-bottom:0.6rem;letter-spacing:0.12em;text-transform:uppercase">Tes réponses</p><div>${items.join('')}</div>`;
+}
+
+function sel(el,key,val){
+  el.closest('.opts').querySelectorAll('.opt').forEach(o=>o.classList.remove('on'));
+  el.classList.add('on');
+  A[key]=val;
+  const sNum=el.closest('.step').dataset.step;
+  const btn=document.getElementById(`bn${sNum}`);
+  if(btn)btn.disabled=false;
+  updRecap();
+}
+
+function updB(v){
+  A.budget=parseInt(v);
+  const pct=Math.round((v-20)/(200-20)*100);
+  document.getElementById('bSlider').style.background=`linear-gradient(90deg,#D4654A ${pct}%,rgba(26,26,46,0.1) ${pct}%)`;
+  document.getElementById('bVal').textContent=`${v}€ / jour`;
+}
+
+function nxt(n){
+  document.querySelector('.step.active').classList.remove('active');
+  document.querySelector(`[data-step="${n}"]`).classList.add('active');
+  document.getElementById('pFill').style.width=`${(n/7)*100}%`;
+  updRecap();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function prv(n){
+  document.querySelector('.step.active').classList.remove('active');
+  document.querySelector(`[data-step="${n}"]`).classList.add('active');
+  document.getElementById('pFill').style.width=`${(n/7)*100}%`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startQuiz(){
+  document.getElementById('hero').style.display='none';
+  document.getElementById('quizSection').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const loadMsgs=["Analyse de ton profil...","Recherche de ta destination...","Calcul du meilleur match...","Préparation de ta carte voyage..."];
+let loadT;
+
+async function generate(){
+  const{dest,score:sc}=best();
+  document.getElementById('quizSection').classList.remove('active');
+  document.getElementById('loadSec').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  let mi=0;
+  document.getElementById('loadMsg').textContent=loadMsgs[0];
+  loadT=setInterval(()=>{
+    mi=(mi+1)%loadMsgs.length;
+    const el=document.getElementById('loadMsg');
+    el.style.opacity=0;
+    setTimeout(()=>{el.textContent=loadMsgs[mi];el.style.opacity=1;},300);
+  },2000);
+
+  let aiWhy=null;
+ const r = await fetch("https://cool-hat-4d00.cretonstylite.workers.dev", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        prompt: `Backpacker: vibe=${A.vibe}, budget=${A.budget}€/j, durée=${A.duree}, compagnie=${A.compagnie}, saison=${A.saison}. Destination: ${dest.name}.`
+    })
+});
+
+
+  clearInterval(loadT);
+  setTimeout(()=>{
+    render(dest,sc,aiWhy);
+    document.getElementById('loadSec').classList.remove('active');
+    document.getElementById('resSec').classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  },400);
+}
+
+function render(d,sc,aiWhy){
+  document.getElementById('rImg').src=d.heroImg;
+  document.getElementById('rImg').alt=d.name;
+  document.getElementById('rTag').textContent=d.tag;
+  document.getElementById('rTitle').textContent=d.name;
+  document.getElementById('rSub').textContent=`${d.country} · ${d.region}`;
+  document.getElementById('rScore').innerHTML=`${sc}<span>%</span>`;
+  document.getElementById('rMatchP').textContent=`Match basé sur : ${vL.vibe[A.vibe]||A.vibe} · ${A.budget}€/j · ${vL.duree[A.duree]||A.duree} · ${vL.saison[A.saison]||A.saison}`;
+
+  document.getElementById('rInfo').innerHTML=d.infos.map(i=>`
+    <div class="ipill">
+      <div class="ipill-icon">${i.icon}</div>
+      <div class="ipill-label">${i.label}</div>
+      <div class="ipill-val">${i.value}</div>
+    </div>`).join('');
+
+  document.getElementById('rHist').textContent=d.histoire;
+
+  document.getElementById('rActs').innerHTML=d.activites.map(a=>`
+    <div class="act-item">
+      <div class="act-header">
+        <span class="act-emoji">${a.emoji}</span>
+        <span class="act-name">${a.name}</span>
+        <span class="act-price">${a.price}</span>
+      </div>
+      <div class="act-desc">${a.desc}</div>
+      <span class="act-tip">💡 ${a.tip}</span>
+    </div>`).join('');
+
+  document.getElementById('rWhy').textContent=aiWhy||d.why;
+  document.getElementById('rFood').textContent=d.food;
+  document.getElementById('rFoodTags').innerHTML=d.foodTags.map(t=>`<span class="tag to">${t}</span>`).join('');
+  document.getElementById('rSleep').textContent=d.sleep;
+
+  document.getElementById('rTransport').innerHTML=d.transport.map(t=>`
+    <div class="tr-item">
+      <div class="tr-icon">${t.icon}</div>
+      <div class="tr-content">
+        <h4>${t.mode}</h4>
+        <p>${t.desc}</p>
+        <span class="platform">${t.platform}</span>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('rMoney').innerHTML=d.money.map(m=>`
+    <div class="money-row">
+      <div class="money-label">${m.label}<small>${m.sub}</small></div>
+      <div class="money-val">${m.val}</div>
+    </div>`).join('');
+
+  const evs=d.events.filter(e=>!e.saisons||e.saisons.includes(A.saison));
+  document.getElementById('rEvents').innerHTML=(evs.length?evs:d.events).map(e=>`
+    <div class="ev-item">
+      <div class="ev-date">${e.date}</div>
+      <div class="ev-content"><h4>${e.name}</h4><p>${e.desc}</p></div>
+    </div>`).join('');
+
+  document.getElementById('rBudget').innerHTML=d.budget.map(b=>`
+    <div class="bud-row"><span>${b.label}</span><span class="bud-amt">${b.amount}</span></div>`).join('');
+
+  document.getElementById('rApps').innerHTML=d.apps.map(a=>`
+    <div class="app-pill">${a.icon} ${a.name}</div>`).join('');
+
+  document.getElementById('rPros').innerHTML=d.pros.map(p=>`<span class="tag tg">✓ ${p}</span>`).join('');
+  document.getElementById('rScams').innerHTML=d.scams;
+
+  document.getElementById('rPhrases').innerHTML=d.phrases.map(p=>`
+    <div class="phrase-item">
+      <span class="phrase-local">${p.local}</span>
+      <span class="phrase-fr">${p.fr}</span>
+    </div>`).join('');
+}
+
+function restart(){
+  Object.keys(A).forEach(k=>A[k]=null);
+  A.budget=50;
+  document.getElementById('resSec').classList.remove('active');
+  document.getElementById('quizSection').classList.add('active');
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.querySelector('[data-step="1"]').classList.add('active');
+  document.getElementById('pFill').style.width='14%';
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('on'));
+  document.querySelectorAll('[id^="bn"]').forEach(b=>b.disabled=true);
+  updB(50);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function copyRes(){
+  const t=document.getElementById('rTitle').textContent;
+  const s=document.getElementById('rScore').textContent;
+  const w=document.getElementById('rWhy').textContent;
+  navigator.clipboard?.writeText(`🌍 Ma destination Wanderlust : ${t}\n✨ Match : ${s}\n\n${w}`).then(()=>alert('Résumé copié !')).catch(()=>alert('Copie non supportée sur ce navigateur'));
+}
+
+updB(50);
+</script>
+</body>
+</html>
