@@ -716,13 +716,14 @@ async function generate(){
   },2000);
 
   let aiWhy=null;
- const r = await fetch("https://cool-hat-4d00.cretonstylite.workers.dev", {
+const r = await fetch("https://cool-hat-4d00.cretonstylite.workers.dev", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
         prompt: `Backpacker: vibe=${A.vibe}, budget=${A.budget}€/j, durée=${A.duree}, compagnie=${A.compagnie}, saison=${A.saison}. Destination: ${dest.name}.`
     })
 });
+
 
 const d = await r.json();
 aiWhy = d.choices?.[0]?.message?.content?.trim();
