@@ -724,9 +724,9 @@ const r = await fetch("https://cool-hat-4d00.cretonstylite.workers.dev", {
     })
 });
 
-
 const d = await r.json();
 aiWhy = d.choices?.[0]?.message?.content?.trim();
+
 
   clearInterval(loadT);
   setTimeout(()=>{
